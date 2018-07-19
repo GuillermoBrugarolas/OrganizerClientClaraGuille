@@ -20,6 +20,10 @@ public class Project {
     public Project() {
     }
 
+    public Project(String name){
+        this.name= name;
+    }
+
     public Project(User owner, LinkedList<User> members, String name, String id, LinkedList<Column> categories, File background, LinkedList<Tag> tags) {
         this.owner = owner;
         this.members = members;

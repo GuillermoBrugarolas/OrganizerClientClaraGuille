@@ -32,49 +32,33 @@ public class PantallaPrincipal extends JFrame {
     private TitledBorder titledBorder3;
     private JComboBox jcbMembres;
     private JTextArea jtaMembres;
+    private  JLabel jlNameProject;
+
 
     public PantallaPrincipal() {
 
         setTitle("PantallaPrincipal");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(800, 900);
+        setSize(1000, 900);
 
 
-
-        /*JPanel jpTitol= new JPanel(new GridLayout(1,3));
-        JLabel j1= new JLabel("  ");
-        jpTitol.add(j1);
-        JLabel j2= new JLabel(" títol del projecte");
-        jpTitol.add(j2);
-        JLabel j3 = new JLabel("  ");
-        add(jpTitol, BorderLayout.NORTH);
-*/
-
-        JPanel jpDades = new JPanel(new BorderLayout());
-        jpDades.setSize(600,500);
-        JLabel jlMembres = new JLabel("  Membres: ");
-        // String  infoCombo = { "Usuari 1", "Usuari 2", "Usuari 3", "Usuari 4"};
-        jcbMembres = new JComboBox();
-        //jcbMembres.setPromptText("Nom del usuari o correu");
-        jcbMembres.setEditable(true);
-        jtaMembres= new JTextArea("HOLA HOLA");
-        jpDades.add(jtaMembres, BorderLayout.CENTER);
-        jpDades.setBorder(BorderFactory.createTitledBorder(" Membres: "));
-        jpDades.add(jcbMembres, BorderLayout.NORTH);
-        jpDades.setSize(600,20);
-        //add(jpDades,BorderLayout.EAST);
+        JPanel jpNameProject= new JPanel(new BorderLayout());
+        jlNameProject = new JLabel("Projecte 1");
+        jlNameProject.setFont(new Font("Arial", Font.LAYOUT_LEFT_TO_RIGHT, 50));
+        jpNameProject.add(jlNameProject);
+        add(jpNameProject, BorderLayout.NORTH);
 
 
-        JPanel jpTitol = new JPanel(new BorderLayout());
+        /*JPanel jpTitol = new JPanel(new BorderLayout());
         ImageIcon image = new ImageIcon("logo.png");
         JLabel imageLabel = new JLabel(image);
         jpTitol.add(jpDades,BorderLayout.EAST);
         jpTitol.add(imageLabel, BorderLayout.CENTER);
-        add(jpTitol, BorderLayout.NORTH);
+        add(jpTitol, BorderLayout.NORTH);*/
 
 
-        JPanel jpTotal= new JPanel(new GridLayout(1, 3));
+        JPanel jpTotal= new JPanel(new GridLayout(1, 4));
 
         //TO DO
 
@@ -93,7 +77,7 @@ public class PantallaPrincipal extends JFrame {
             JPanel columnpanel = new JPanel();
             jpProva.add(columnpanel);
             columnpanel.setLayout(new GridLayout(0, 1, 0, 1));
-            columnpanel.setBackground(Color.black);
+            columnpanel.setBackground(Color.BLACK);
 
         for(int i=0; i <10 ;i++) {
 
@@ -237,6 +221,20 @@ public class PantallaPrincipal extends JFrame {
         }
 
 
+        JPanel jpDades = new JPanel(new BorderLayout());
+        jpDades.setSize(600,500);
+        JLabel jlMembres = new JLabel("  Membres: ");
+        // String  infoCombo = { "Usuari 1", "Usuari 2", "Usuari 3", "Usuari 4"};
+        jcbMembres = new JComboBox();
+        //jcbMembres.setPromptText("Nom del usuari o correu");
+        jcbMembres.setEditable(true);
+        jtaMembres= new JTextArea("HOLA HOLA");
+        jpDades.add(jtaMembres, BorderLayout.CENTER);
+        jpDades.setBorder(BorderFactory.createTitledBorder(" Membres: "));
+        jpDades.add(jcbMembres, BorderLayout.NORTH);
+        jpDades.setSize(600,20);
+
+        jpTotal.add(jpDades);
 
         add(jpTotal, BorderLayout.CENTER);
 

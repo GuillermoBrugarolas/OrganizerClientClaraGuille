@@ -12,9 +12,14 @@ public class UserView extends JFrame{
     private JButton jbProjecte;
     private JButton jbEditar;
     private JButton jbEliminar;
-    private List listLeft ;
-    private List listRigth;
-    private ArrayList<Project> projectes;
+    private JList<String> listLeft ;
+    private JList<String> listRigth;
+    private ArrayList<Project> projectesPropis;
+    private ArrayList<Project> projectesCompartits;
+    private JTextField jtfId;
+    private JButton jbId;
+    private JLabel jlNomUsuari;
+
 
 
     public UserView(){
@@ -22,21 +27,34 @@ public class UserView extends JFrame{
         setTitle("Benvinguts al Organizer");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(500,300);
+        setSize(700,600);
 
-        CardLayout total = new CardLayout();
+
         JPanel jpProjecte= new JPanel(new GridLayout(1,2));
         JPanel jpMeu = new JPanel(new BorderLayout());
-        projectes = new ArrayList<>();
+        projectesPropis = new ArrayList<>();
+        projectesCompartits= new ArrayList<>();
 
         //PantallaPrincipal p= new PantallaPrincipal();
         //ScrollPane jspProject = new JScrollPane();
-        jpMeu.setBorder(BorderFactory.createTitledBorder("Els meus projectes : "));
-        listLeft= new List();
 
-        for(Project pro: projectes){
 
-            listLeft.add(pro.getName());
+        jlNomUsuari= new JLabel("Nom Usuari");
+        jlNomUsuari.setFont(new Font("Arial", Font.LAYOUT_LEFT_TO_RIGHT, 25));
+        jpMeu.add(jlNomUsuari, BorderLayout.NORTH);
+
+        DefaultListModel<String> model= new DefaultListModel<>();
+        listLeft= new JList(model);
+        listLeft.setBorder(BorderFactory.createTitledBorder("Els meus projectes : "));
+
+        Project p1= new Project("Clara");
+        projectesPropis.add(p1);
+        Project p2 = new Project("Guillermo");
+        projectesPropis.add(p2);
+
+        for(Project pro: projectesPropis){
+
+            model.addElement(pro.toString());
         }
 
         JPanel jpBotons = new JPanel(new GridLayout(1,2));
@@ -50,30 +68,31 @@ public class UserView extends JFrame{
 
 
         JPanel jpCompartit= new JPanel(new BorderLayout());
-        jpCompartit.setBorder(BorderFactory.createTitledBorder("Projectes compartits : "));
-        listRigth = new List(5);
+        JPanel jpSearch= new JPanel(new GridLayout(1,3));
+        jbId= new JButton("Search");
+        jpSearch.add(new JLabel(" ID Project :"));
+        jtfId= new JTextField();
+        jpSearch.add(jtfId);
+        jpSearch.add(jbId);
+        //jpCompartit.setBorder(BorderFactory.createTitledBorder("Projectes compartits : "));
+        DefaultListModel<String> modelCompartit= new DefaultListModel<>();
+        listRigth = new JList(modelCompartit);
+
         jbProjecte= new JButton("Nou Projecte");
-        listRigth.add("Projecte 1");
-        listRigth.add("Projecte 2");
-        listRigth.add("Projecte 3");
-        listRigth.add("Projecte 1");
-        listRigth.add("Projecte 2");
-        listRigth.add("Projecte 3");
-        listRigth.add("Projecte 1");
-        listRigth.add("Projecte 2");
-        listRigth.add("Projecte 3");
-        listRigth.add("Projecte 1");
-        listRigth.add("Projecte 2");
-        listRigth.add("Projecte 3");
-        listRigth.add("Projecte 1");
-        listRigth.add("Projecte 2");
-        listRigth.add("Projecte 3");
-        listRigth.add("Projecte 1");
-        listRigth.add("Projecte 2");
-        listRigth.add("Projecte 3");
-        listRigth.add("Projecte 1");
-        listRigth.add("Projecte 2");
-        listRigth.add("Projecte 3");
+
+        Project p4= new Project("cucut!");
+        projectesCompartits.add(p4);
+        Project p6 = new Project("heeey");
+        projectesCompartits.add(p6);
+
+        for(Project p: projectesCompartits) {
+
+            modelCompartit.addElement(p.toString());
+
+        }
+
+        jpCompartit.add(jpSearch, BorderLayout.NORTH);
+        listRigth.setBorder(BorderFactory.createTitledBorder("Projectes compartits : "));
         jpCompartit.add(listRigth);
         jpCompartit.add(jbProjecte, BorderLayout.SOUTH);
 
@@ -87,39 +106,6 @@ public class UserView extends JFrame{
     public void removeObjectLeft(PantallaPrincipal pantallaPrincipal){
 
             remove(pantallaPrincipal);
-    }
-
-    public String seleccionatLeft() {
-
-     return listLeft.getSelectedItem();
-
-    }
-
-
-    public void addProjectLeft(Project p){
-        projectes.add(p);
-        listLeft.add(p.getName());
-    }
-
-    public void addProjectRigth(Project p){
-        projectes.add(p);
-        listRigth.add(p.getName());
-    }
-
-    public List getListLeft() {
-        return listLeft;
-    }
-
-    public void setListLeft(List listLeft) {
-        this.listLeft = listLeft;
-    }
-
-    public List getListRigth() {
-        return listRigth;
-    }
-
-    public void setListRigth(List listRigth) {
-        this.listRigth = listRigth;
     }
 
 
