@@ -134,11 +134,11 @@ public class UserView extends JFrame{
     }
 
 
-//    public static void main(String[] args) {
+public static void main(String[] args) {
 //
-//        UserView vista = new UserView();
-//        vista.setVisible(true);
-//    }
+      UserView vista = new UserView();
+        vista.setVisible(true);
+    }
 
 
 

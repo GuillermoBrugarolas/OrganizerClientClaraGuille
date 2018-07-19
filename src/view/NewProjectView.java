@@ -1,7 +1,6 @@
 package view;
 
 import controller.NewProjectController;
-import controller.UserViewController;
 import model.User;
 
 import javax.swing.*;
@@ -54,30 +53,25 @@ public class NewProjectView extends JFrame {
         jpDades.setSize(600,20);
         add(jpDades,BorderLayout.NORTH);
 
-        JPanel jpMembres= new JPanel();
-        llista = new JList<String>();
+        JPanel jpMembres= new JPanel(new BorderLayout());
+        llista = new JList<>();
         jpMembres.add(llista);
-
+        jpMembres.setSize(10,5);
         add(jpMembres, BorderLayout.CENTER);
 
         JPanel jpInf = new JPanel(new GridLayout(6,1));
 
         //Botons Membres
-        JPanel jpBoto = new JPanel(new GridLayout(1,2));
+        JPanel jpBoto = new JPanel(new GridLayout());
         jbMembre = new JButton("Afegir");
-        jbDelete= new JButton("Eliminar");
         jpBoto.add(jbMembre);
-        jpBoto.add(jbDelete);
         jpInf.add(jpBoto);
 
         //Columnes
         JPanel jpCol= new JPanel(new GridLayout(1,2));
         JLabel jlColum = new JLabel("Nº Columnes: ");
-        //jcColum = new JComboBox();
-        SpinnerNumberModel jsColum = new SpinnerNumberModel(1,1,100,1);
-
+        SpinnerNumberModel jsColum = new SpinnerNumberModel(1,1,3,1);
         jsColumna= new JSpinner(jsColum);
-        //sColumna.addChangeListener(this);
         jpCol.add(jlColum);
         jpCol.add(jsColumna);
         jpInf.add(jpCol);
@@ -87,15 +81,13 @@ public class NewProjectView extends JFrame {
         JLabel jlColor = new JLabel("Color fondo: ");
         jbBack= new Button("Background");
         jbBack.setBackground(Color.pink);
-
-
         jpFons.add(jlColor);
         jpFons.add(jbBack);
         jpInf.add(jpFons);
 
         //Etiqueta
         JPanel jpEtiqueta= new JPanel(new GridLayout(1,2));
-        JLabel jlEtiqueta = new JLabel("Etiqueta: ");
+        JLabel jlEtiqueta = new JLabel("Tasca ");
         jpEtiqueta.add(jlEtiqueta);
         jpInf.add(jpEtiqueta);
 
@@ -116,7 +108,7 @@ public class NewProjectView extends JFrame {
         jbProjecte = new JButton("Crear Projecte");
         jpInf.add(jbProjecte);
         add(jpInf, BorderLayout.SOUTH);
-        this.setVisible(true);
+        //this.setVisible(true);
 
     }
 
@@ -168,6 +160,11 @@ public class NewProjectView extends JFrame {
         jbBack.addActionListener(c);
     }
 
+    public static void main(String[] args) {
+
+        NewProjectView vista = new NewProjectView();
+        vista.setVisible(true);
+    }
 }
 
 

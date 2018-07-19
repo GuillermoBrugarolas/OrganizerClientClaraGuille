@@ -1,47 +1,294 @@
 package view;
 
-import model.Project;
 import model.Task;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.LinkedList;
 
-public class PantallaPrincipal extends JFrame{
+public class PantallaPrincipal extends JFrame {
 
-    private int columnes;
+
     private JButton jbAfegir;
     private String name;
     private int price;
+    private LinkedList<Task> tasks1 = new LinkedList<>();
+    private LinkedList<Task> tasks2;
+    private LinkedList<Task> tasks3;
     //private ArrayList<Projecte> projectes;
 
 
-    public PantallaPrincipal(){
+    //private JScrollPane jsp2;
+    //private JScrollPane jsp3;
+    private JLabel jlDescripcio;
+    private JLabel jlDescripcio2;
+    private JLabel jlDescripcio3;
+    private JButton jbEliminar;
+    private JButton jbEditar;
+    private JLabel jlName;
+    private TitledBorder titledBorder;
+    private TitledBorder titledBorder2;
+    private TitledBorder titledBorder3;
+    private JComboBox jcbMembres;
+    private JTextArea jtaMembres;
+
+    public PantallaPrincipal() {
 
         setTitle("PantallaPrincipal");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(500,300);
-        setLayout(new BorderLayout());
-
-
-        JScrollPane jspTotal = new JScrollPane();
-        jspTotal.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        setSize(800, 900);
 
 
 
-        ObservableList<Task> tasques = FXCollections.observableArrayList();
+        /*JPanel jpTitol= new JPanel(new GridLayout(1,3));
+        JLabel j1= new JLabel("  ");
+        jpTitol.add(j1);
+        JLabel j2= new JLabel(" títol del projecte");
+        jpTitol.add(j2);
+        JLabel j3 = new JLabel("  ");
+        add(jpTitol, BorderLayout.NORTH);
+*/
+
+        JPanel jpDades = new JPanel(new BorderLayout());
+        jpDades.setSize(600,500);
+        JLabel jlMembres = new JLabel("  Membres: ");
+        // String  infoCombo = { "Usuari 1", "Usuari 2", "Usuari 3", "Usuari 4"};
+        jcbMembres = new JComboBox();
+        //jcbMembres.setPromptText("Nom del usuari o correu");
+        jcbMembres.setEditable(true);
+        jtaMembres= new JTextArea("HOLA HOLA");
+        jpDades.add(jtaMembres, BorderLayout.CENTER);
+        jpDades.setBorder(BorderFactory.createTitledBorder(" Membres: "));
+        jpDades.add(jcbMembres, BorderLayout.NORTH);
+        jpDades.setSize(600,20);
+        //add(jpDades,BorderLayout.EAST);
+
+
+        JPanel jpTitol = new JPanel(new BorderLayout());
+        ImageIcon image = new ImageIcon("logo.png");
+        JLabel imageLabel = new JLabel(image);
+        jpTitol.add(jpDades,BorderLayout.EAST);
+        jpTitol.add(imageLabel, BorderLayout.CENTER);
+        add(jpTitol, BorderLayout.NORTH);
+
+
+        JPanel jpTotal= new JPanel(new GridLayout(1, 3));
+
+        //TO DO
+
+        //JPanel jpColumna1 = new JPanel();
+
+            JScrollPane jsp1 = new JScrollPane();
+            jsp1.setBorder(BorderFactory.createTitledBorder("To Do"));
+            jsp1.setBounds(10, 20, 500, 400);
+            jsp1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            jpTotal.add(jsp1);
+
+            JPanel jpProva = new JPanel();
+            jsp1.setViewportView(jpProva);
+            jpProva.setLayout(new BorderLayout(0, 0));
+
+            JPanel columnpanel = new JPanel();
+            jpProva.add(columnpanel);
+            columnpanel.setLayout(new GridLayout(0, 1, 0, 1));
+            columnpanel.setBackground(Color.black);
+
+        for(int i=0; i <10 ;i++) {
+
+                //Vinyeta de cada tasca
+
+            JPanel jpTasca = new JPanel(new BorderLayout());
+            jpTasca.setBackground(SystemColor.gray);
+            jpTasca.setPreferredSize(new Dimension(100, 90));
+            columnpanel.add(jpTasca);
+            //jpTasca.setLayout(null);
+
+            //D'ALT
+            titledBorder = new TitledBorder(UIManager.getBorder("TitledBorder.border"), "task1", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(2, 2, 2));
+            jpTasca.setBorder(titledBorder);
+
+
+
+
+            //CENTRE
+            //jlName = new JLabel("Nom: ------ ");
+            jlDescripcio = new JLabel(" Descripció: \n ------ ");
+            jpTasca.add(jlDescripcio, BorderLayout.CENTER);
+            //BAIX
+            JPanel jpButton = new JPanel(new GridLayout(1, 2));
+            jpButton.setBackground(Color.gray);
+            jbEditar = new JButton("Editar");
+            jbEliminar = new JButton("Eliminar");
+            jpButton.add(jbEditar);
+            jpButton.add(jbEliminar);
+
+            jpTasca.add(jpButton, BorderLayout.SOUTH);
+
+                //jpTasca.add(jlName, BorderLayout.NORTH);
+
+
+
+        }
+
+
+        //DOING
+
+
+        //JPanel jpColumna2 = new JPanel();
+        JScrollPane jsp2 = new JScrollPane();
+        jsp2.setBorder(BorderFactory.createTitledBorder("Doing"));
+        jsp2.setBounds(10,20,500,400);
+        jsp2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jpTotal.add(jsp2);
+
+        JPanel jpProva2= new JPanel();
+        jsp2.setViewportView(jpProva2);
+        jpProva2.setLayout(new BorderLayout(5, 6));
+
+        JPanel columnpanel2 = new JPanel();
+        jpProva2.add(columnpanel2);
+        columnpanel2.setLayout(new GridLayout(0,1,0,1));
+        columnpanel2.setBackground(Color.black);
+
+        for(int i=0; i <10 ;i++) {
+
+            //Vinyeta de cada tasca
+
+            JPanel jpTasca2 = new JPanel(new BorderLayout());
+            jpTasca2.setPreferredSize(new Dimension(100,90));
+            columnpanel2.add(jpTasca2);
+
+            //D'ALT
+            titledBorder2 = new TitledBorder(UIManager.getBorder("TitledBorder.border"), "holaa 2", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0));
+            jpTasca2.setBorder(titledBorder2);
+
+            //CENTRE
+            //jlName = new JLabel("Nom: ------ ");
+            jlDescripcio2 = new JLabel(" Descripció: \n ------ ");
+            jpTasca2.add(jlDescripcio2, BorderLayout.CENTER);
+            //BAIX
+            JPanel jpButton2 = new JPanel(new GridLayout(1, 2));
+            jpButton2.setBackground(Color.lightGray);
+            jbEditar = new JButton("Editar");
+            jbEliminar = new JButton("Eliminar");
+            jpButton2.add(jbEditar);
+            jpButton2.add(jbEliminar);
+            jpTasca2.add(jpButton2, BorderLayout.SOUTH);
+
+            //jpTasca.add(jlName, BorderLayout.NORTH);
+
+
+            jpTasca2.setBackground(SystemColor.lightGray);
+
+        }
+        //DONE
+
+
+        //JPanel jpColumna3 = new JPanel();
+        JScrollPane jsp3 = new JScrollPane();
+        jsp3.setBorder(BorderFactory.createTitledBorder("Done"));
+        jsp3.setBounds(10,20,500,400);
+        jsp3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jpTotal.add(jsp3);
+
+        JPanel jpProva3= new JPanel();
+        jsp3.setViewportView(jpProva3);
+        jpProva3.setLayout(new BorderLayout(0, 0));
+
+        JPanel columnpanel3 = new JPanel();
+        jpProva3.add(columnpanel3);
+        columnpanel3.setLayout(new GridLayout(0,1,0,1));
+        columnpanel3.setBackground(Color.black);
+
+        for(int i=0; i <10 ;i++) {
+
+            //Vinyeta de cada tasca
+
+            JPanel jpTasca3 = new JPanel(new BorderLayout());
+            jpTasca3.setPreferredSize(new Dimension(100,90));
+            columnpanel3.add(jpTasca3);
+
+
+            //D'ALT
+            titledBorder3 = new TitledBorder(UIManager.getBorder("TitledBorder.border"), "holaa coca.cola 3", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(2, 2, 2));
+            jpTasca3.setBorder(titledBorder3);
+
+            //CENTRE
+            //jlName = new JLabel("Nom: ------ ");
+            jlDescripcio3 = new JLabel(" Descripció: " +" \n" + "------ ");
+            jpTasca3.add(jlDescripcio3, BorderLayout.CENTER);
+
+            //BAIX
+            JPanel jpButton3 = new JPanel(new GridLayout(1, 2));
+            jpButton3.setBackground(Color.gray);
+            jbEditar = new JButton("Editar");
+            jbEliminar = new JButton("Eliminar");
+            jpButton3.add(jbEditar);
+            jpButton3.add(jbEliminar);
+            jpTasca3.add(jpButton3, BorderLayout.SOUTH);
+
+            //jpTasca.add(jlName, BorderLayout.NORTH);
+
+
+            jpTasca3.setBackground(SystemColor.gray);
+
+        }
+
+
+
+        add(jpTotal, BorderLayout.CENTER);
+
+
+    }
+
+
+
+        /*LinkedList<String> descriptions = new LinkedList<>();
+
 
         for(Task t: tasques) {
-            //tasques.addAll(new Task(t.getName(),t.getPosition()));
-            //tasques.addAll(new CustomThing(t.getName(), 123), new CustomThing("Horse", 456), new CustomThing("Jam", 789));
+            String label  = t.getTag() +"\n" +t.getName() +"\n" + t.getDescription() ;
+            descriptions.add(label);
+        }
+        JList<String> jlList=  new JList<>(descriptions);
+
+        JScrollPane scrollPane1 = new JScrollPane(jlList);
+        jpTasca.add(scrollPane1);
+
+
+
+        ListSelectionListener listSelectionListener = new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                System.out.println("Name:" + listSelectionEvent.getClass().getName());
+
+            }
+
+            MouseListener mouseListener = new MouseAdapter() {
+                public void mouseClicked(MouseEvent mouseEvent) {
+                    JList theList = (JList) mouseEvent.getSource();
+                    if (mouseEvent.getClickCount() == 2) {
+                        int index = theList.locationToIndex(mouseEvent.getPoint());
+                        if (index >= 0) {
+                            Object o = theList.getModel().getElementAt(index);
+                            System.out.println("Double-clicked on: " + o.toString());
+                        }
+                    }
+                }
+
+                //System.out.println("Description:" + listSelectionEvent.getClass().toGenericString());
+
+                // JScrollPane jspTotal = new JScrollPane();
+                //ObservableList<Task> tasques = FXCollections.observableArrayList();
+
+*/
+       /* JPanel jpTasca = new JPanel();
+
+        for(Task t: tasques) {
+            tasques.addAll(new Task(t.getName(),t.getPosition()));
+            tasques.addAll(new CustomThing(t.getName(), 123), new CustomThing("Horse", 456), new CustomThing("Jam", 789));
+
         }
 
 
@@ -76,24 +323,37 @@ public class PantallaPrincipal extends JFrame{
         jpView.add(jbAfegir);
         jpView.add(jspColumna);
     }
+*/
+
+
+    //Finestretes de tasques internes
+
+
+    //};
 
 
 
-        //Finestretes de tasques internes
-
-
-
-//    public static void main(String[] args) {
-//
-//        //CustomListView c= new CustomListView();
-//        PantallaPrincipal vista = new PantallaPrincipal();
-//        vista.setVisible(true);
-//        //c.setVisible(true);
+    public static void main(String[] args) {
+        // CustomListView c= new CustomListView();
+        PantallaPrincipal vista = new PantallaPrincipal();
+        vista.setVisible(true);
+        //c.setVisible(true);
 //    }
-    public void actualitzaProjecte(Project p){
-
+        //public void actualitzaProjecte(Project p){
 
     }
 
+    /*public class Tutorial extends Applet {
+
+        public void paint(Graphics x){
+            x.draw3DRect(5,5,5,5,true);
+            x.setColor(Color.RED);
+            x.fill3DRect(5,5,5,5,true);
+        }
+
+    }*/
 }
+
+
+
 
