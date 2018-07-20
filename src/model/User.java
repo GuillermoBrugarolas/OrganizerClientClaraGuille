@@ -1,14 +1,17 @@
 package model;
 
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.LinkedList;
 
 import model.MainClient;
 
 
-public class User {
+public class User implements Serializable{
 
 	private String nickname;
+
+	private static final long serialVersionUID = 42L;
 
 	private String email;
 
@@ -17,7 +20,10 @@ public class User {
 	private LinkedList<Project> ownProjects;
 
 	private LinkedList<Project> joinedProjects;
-	
+
+	public User() {
+	}
+
 	public User(String nickname, String email, String password, LinkedList<Project> ownProjects, LinkedList<Project> joinedProjects){
 		this.nickname = nickname;
 		this.email = email;
@@ -61,14 +67,14 @@ public class User {
 		this.joinedProjects = joinedProjects;
 	}
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", ownProjects=" + ownProjects +
-                ", joinedProjects=" + joinedProjects +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "User{" +
+				"nickname='" + nickname + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", ownProjects=" + ownProjects +
+				", joinedProjects=" + joinedProjects +
+				'}';
+	}
 }

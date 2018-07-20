@@ -2,19 +2,20 @@ package model;
 
 
 import java.awt.*;
-import java.io.File;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  * Created by Guillermo Brugarolas on 12/06/2018.
  */
-public class Project {
+public class Project implements Serializable{
+    private static final long serialVersionUID = 42L;
     private User owner;
     private LinkedList<User> members;
     private String name;
     private String id;
     private LinkedList<Column> columns;
-    private File background;
+    private String background;
     private LinkedList<Tag> tags;
 
     public Project() {
@@ -24,7 +25,7 @@ public class Project {
         this.name= name;
     }
 
-    public Project(User owner, LinkedList<User> members, String name, String id, LinkedList<Column> categories, File background, LinkedList<Tag> tags) {
+    public Project(User owner, LinkedList<User> members, String name, String id, LinkedList<Column> categories, String background, LinkedList<Tag> tags) {
         this.owner = owner;
         this.members = members;
         this.name = name;
@@ -74,11 +75,11 @@ public class Project {
         this.columns = columns;
     }
 
-    public File getBackground() {
+    public String getBackground() {
         return background;
     }
 
-    public void setBackground(File background) {
+    public void setBackground(String background) {
         this.background = background;
     }
 
@@ -106,12 +107,9 @@ public class Project {
     public String toString() {
         return "Project{" +
                 "name='" + name +
-                ", owner=" + owner +
-                ", members=" + members +
+                ", owner=" + owner.getNickname() +
                 ", id='" + id +
-                ", columns=" + columns +
                 ", background=" + background +
-                ", tags=" + tags +
                 '}';
     }
 }

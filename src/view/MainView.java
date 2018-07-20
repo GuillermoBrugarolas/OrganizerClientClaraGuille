@@ -69,8 +69,8 @@ public class MainView extends JFrame {
         setTitle("Organizer Client");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(700, 400);
-        setLocationRelativeTo(null);
-        setVisible(true);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     public void registerController(MainViewController actionListener){
@@ -116,5 +116,12 @@ public class MainView extends JFrame {
         jpfPassword2Reg.setText("");
         jtfNameMailLogIn.setText("");
         jpfPasswordLogIn.setText("");
+    }
+
+    public boolean checkLogFields(){
+        if (jtfNameMailLogIn.getText() == null || jtfNameMailLogIn.getText().equals("")){
+            return false;
+        }
+        return true;
     }
 }

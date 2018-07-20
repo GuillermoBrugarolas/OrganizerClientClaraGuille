@@ -6,7 +6,6 @@ import model.User;
 import network.ServerCommunication;
 import view.NewProjectView;
 import view.UserView;
-import view.UserView2;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

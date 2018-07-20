@@ -5,7 +5,6 @@ import model.User;
 import network.ServerCommunication;
 import view.MainView;
 import view.UserView;
-import view.UserView2;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +19,7 @@ public class MainViewController implements ActionListener {
     private UserView userView;
     private Logics logics;
     private ServerCommunication serverCom;
-    public User user;
+    public User user, userLoaded;
 
     public MainViewController(MainView view, Logics logics, ServerCommunication serverCom){
         this.view = view;
@@ -46,31 +45,28 @@ public class MainViewController implements ActionListener {
         }
 
         if(((JButton)e.getSource()).getText().equals("Log in")){
-            message = "LOG:"+view.getLogInNameMail()+"/"+view.getLogInPassword();
-            if(serverCom.sendLogUser(message)){
-                userView = new UserView();
-                UserViewController userViewController = new UserViewController(user, userView, logics, serverCom, this);
-                userView.registerController(userViewController);
-                message = "GET:"+view.getLogInNameMail();
-                String userData = serverCom.sendGetUser(message);
-                if (!userData.equals("KO")) {
-                    user = logics.parseBasicUserData(userData);
-
-//
-                    message = "GETALLUSERS:";
-                    String sUsersList = serverCom.sendGetAllUsers(message);
-                    if (!sUsersList.equals("")) {
-                        System.out.println(sUsersList);
-                        String[] saUsersList = logics.parseAllUsersData(sUsersList);
-                        //userView.refresh(user, saUsersList);
-                        view.clearFields();
-                    } else {
-                        view.makeDialog("Error loading all the users from database", false);
-                    }
-                } else {
-                    view.makeDialog("Error loading user from database", false);
-                    view.clearFields();
+            if (view.checkLogFields() == true) {
+                message = "LOG:" + view.getLogInNameMail() + "/" + view.getLogInPassword();
+                if (serverCom.sendLogUser(message)) {
+                    userView = new UserView();
+                    UserViewController userViewController = new UserViewController(user, userView, logics, serverCom, this);
+                    userView.registerController(userViewController);
+                    message = "GET:" + view.getLogInNameMail();
+                    userLoaded = serverCom.sendGetUser(message);
+                    userView.loadUserData(userLoaded);
+//                message = "GETALLUSERS:";
+//                String sUsersList = serverCom.sendGetAllUsers(message);
+//                if (!sUsersList.equals("")) {
+//                    System.out.println(sUsersList);
+//                    String[] saUsersList = logics.parseAllUsersData(sUsersList);
+//                    //userView.refresh(user, saUsersList);
+//                    view.clearFields();
+//                } else {
+//                    view.makeDialog("Error loading all the users from database", false);
+//                }
                 }
+            } else {
+                makeDialog("There are errors or blank spaces in your Log In form!", false);
             }
         }
     }

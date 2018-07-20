@@ -2,20 +2,20 @@ package view;
 
 import controller.UserViewController;
 import model.Project;
+import model.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class UserView extends JFrame{
 
     private JButton jbProjecte;
     private JButton jbEditar;
     private JButton jbEliminar;
-    private JList<String> listLeft ;
-    private JList<String> listRigth;
-    private ArrayList<Project> projectesPropis;
-    private ArrayList<Project> projectesCompartits;
+    private JList<Project> listLeft;
+    private JList<Project> listRight;
     private JTextField jtfId;
     private JButton jbId;
     private JLabel jlNomUsuari;
@@ -29,33 +29,15 @@ public class UserView extends JFrame{
         setLocationRelativeTo(null);
         setSize(700,600);
 
-
         JPanel jpProjecte= new JPanel(new GridLayout(1,2));
         JPanel jpMeu = new JPanel(new BorderLayout());
-        projectesPropis = new ArrayList<>();
-        projectesCompartits= new ArrayList<>();
-
-        //PantallaPrincipal p= new PantallaPrincipal();
-        //ScrollPane jspProject = new JScrollPane();
-
 
         jlNomUsuari= new JLabel("Nom Usuari");
         jlNomUsuari.setFont(new Font("Arial", Font.LAYOUT_LEFT_TO_RIGHT, 25));
         jpMeu.add(jlNomUsuari, BorderLayout.NORTH);
 
-        DefaultListModel<String> model= new DefaultListModel<>();
-        listLeft= new JList(model);
-        listLeft.setBorder(BorderFactory.createTitledBorder("Els meus projectes : "));
-
-        Project p1= new Project("Clara");
-        projectesPropis.add(p1);
-        Project p2 = new Project("Guillermo");
-        projectesPropis.add(p2);
-
-        for(Project pro: projectesPropis){
-
-            model.addElement(pro.toString());
-        }
+        listLeft= new JList<Project>();
+        listLeft.setBorder(BorderFactory.createTitledBorder("Els meus projectes: "));
 
         JPanel jpBotons = new JPanel(new GridLayout(1,2));
         jbEditar= new JButton("Editar");
@@ -74,38 +56,23 @@ public class UserView extends JFrame{
         jtfId= new JTextField();
         jpSearch.add(jtfId);
         jpSearch.add(jbId);
-        //jpCompartit.setBorder(BorderFactory.createTitledBorder("Projectes compartits : "));
-        DefaultListModel<String> modelCompartit= new DefaultListModel<>();
-        listRigth = new JList(modelCompartit);
-
         jbProjecte= new JButton("Nou Projecte");
-
-        Project p4= new Project("cucut!");
-        projectesCompartits.add(p4);
-        Project p6 = new Project("heeey");
-        projectesCompartits.add(p6);
-
-        for(Project p: projectesCompartits) {
-
-            modelCompartit.addElement(p.toString());
-
-        }
-
         jpCompartit.add(jpSearch, BorderLayout.NORTH);
-        listRigth.setBorder(BorderFactory.createTitledBorder("Projectes compartits : "));
-        jpCompartit.add(listRigth);
+        listRight = new JList<Project>();
+        listRight.setBorder(BorderFactory.createTitledBorder("Projectes compartits: "));
+        jpCompartit.add(listRight);
         jpCompartit.add(jbProjecte, BorderLayout.SOUTH);
-
         jpProjecte.add(jpMeu);
         jpProjecte.add(jpCompartit);
         add(jpProjecte);
-        this.setVisible(true);
+        this.setLocationRelativeTo(null);
+        this.setVisible(false);
 
     }
 
     public void removeObjectLeft(PantallaPrincipal pantallaPrincipal){
 
-            remove(pantallaPrincipal);
+        remove(pantallaPrincipal);
     }
 
 
@@ -119,13 +86,28 @@ public class UserView extends JFrame{
 
     }
 
+    public void loadUserData(User u){
+        int w, v;
+        System.out.println(u.getNickname());
+        System.out.println(u.getEmail());
+        System.out.println(u.getPassword());
+        jlNomUsuari.setText(u.getNickname());
+        Object[] ownList = u.getOwnProjects().toArray();
+        Object[] joinedList = u.getJoinedProjects().toArray();
+        Project[] ownPs = new Project[ownList.length];
+        Project[] joinedPs = new Project[joinedList.length];
 
-public static void main(String[] args) {
-//
-      UserView vista = new UserView();
-        vista.setVisible(true);
+        joinedList = u.getJoinedProjects().toArray();
+        for (w = 0; w < ownList.length; w++){
+            ownPs[w] = (Project)ownList[w];
+        }
+        for (v = 0; v < joinedList.length; v++){
+            joinedPs[v] = (Project)joinedList[v];
+        }
+        this.listLeft.setListData(ownPs);
+        this.listRight.setListData(joinedPs);
+        this.setVisible(true);
     }
-
 
 
 }
