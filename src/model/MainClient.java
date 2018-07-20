@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.net.Socket;
 
 import javax.swing.SwingUtilities;
@@ -26,14 +27,13 @@ public class MainClient {
 
                     MainView clientView = new MainView();
                     Logics logics = new Logics();
-                    ServerCommunication serverCom = new ServerCommunication(config.getIp(), config.getPortServer());
+                    ServerCommunication serverCom;
+                    serverCom = new ServerCommunication(config.getIp(), config.getPortServer());
                     MainViewController mainViewController = new MainViewController(clientView, logics, serverCom);
-
                     logics.registerMainViewController(mainViewController);
                     clientView.registerController(mainViewController);
                     serverCom.registerControllers(mainViewController, new UserViewController());
                     clientView.setVisible(true);
-
                 }
             }
         });

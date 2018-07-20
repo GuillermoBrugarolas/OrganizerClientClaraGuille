@@ -14,6 +14,7 @@ public class NewProjectView extends JFrame {
     private LinkedList<User> usuaris= new LinkedList<>();
     private LinkedList<Task> tasques= new LinkedList<>();
     private JComboBox<String> jcbMembres;
+    private JComboBox<String> jcbBackgrounds;
     private JButton jbAfegir;
     private JButton jbEditar;
     private JButton jbEliminar;
@@ -21,10 +22,12 @@ public class NewProjectView extends JFrame {
     private JButton jbMembre;
     private JList<String>  llista;
     private JList<String>  tasks;
-    private Button jbBack;
+    private JButton jbBack;
     private JComboBox jcColum;
     private JSpinner jsColumna;
     private JTextField jtfMembre;
+    DefaultListModel<String> modelTasca;
+    DefaultListModel<String> modelLlista;
 
 
     public NewProjectView() {
@@ -32,7 +35,7 @@ public class NewProjectView extends JFrame {
         setTitle("Dades Projecte");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(400, 400);
+        setSize(400, 600);
 
         getContentPane().setLayout(new BorderLayout());
 
@@ -53,10 +56,9 @@ public class NewProjectView extends JFrame {
         //Membres
         JPanel jpUsers= new JPanel(new GridLayout(1,2));
         JLabel jlMembres = new JLabel("  Usuaris: ");
-        jtfMembre = new JTextField();
-        //jtfMembre.setSize(10,5);
+        jcbMembres = new JComboBox<String>();
         jpUsers.add(jlMembres);
-        jpUsers.add(jtfMembre);
+        jpUsers.add(jcbMembres);
 
         jp1.add(jpUsers);
         add(jp1,BorderLayout.NORTH);
@@ -64,19 +66,18 @@ public class NewProjectView extends JFrame {
         JPanel mig= new JPanel(new GridLayout(2,1));
         JPanel jp2= new JPanel(new BorderLayout());
         JPanel jpMembres= new JPanel(new BorderLayout());
-        DefaultListModel<String> model= new DefaultListModel<>();
-        llista= new JList(model);
+        modelLlista = new DefaultListModel<String>();
+        llista= new JList(modelLlista);
         llista.setBorder(BorderFactory.createTitledBorder("Compartir amb... "));
 
-        for(User u: usuaris){
-            model.addElement(u.getNickname());
-        }
         jpMembres.add(llista);
         //jpMembres.setSize(10,5);
         jp2.add(jpMembres, BorderLayout.CENTER);
 
         //JPanel jpInf = new JPanel(new GridLayout(6,1));
 
+        //Back button
+        jbBack = new JButton("Back");
         //Botons Membres
         JPanel jpBoto = new JPanel(new GridLayout(1,2));
         jbMembre = new JButton("Afegir");
@@ -102,7 +103,7 @@ public class NewProjectView extends JFrame {
         //Etiqueta
 
         JPanel jpTasca= new JPanel(new BorderLayout());
-        DefaultListModel<String> modelTasca= new DefaultListModel<>();
+        modelTasca= new DefaultListModel<String>();
         tasks= new JList(modelTasca);
         tasks.setBorder(BorderFactory.createTitledBorder("Tasques: "));
 
@@ -130,18 +131,19 @@ public class NewProjectView extends JFrame {
         JPanel jp4= new JPanel(new GridLayout(2,1));
         JPanel jpFons = new JPanel(new GridLayout(1,2));
         String[]  infoCombo = { "Acuarela", "Cielo", "Circuito", "Corcho", "Madera", "Pizarra", "Verdor"};
-        jcbMembres = new JComboBox(infoCombo);
-        //jcbMembres.setPromptText("Nom del usuari o correu");
-        jcbMembres.setEditable(true);
-        jpFons.add(jcbMembres);
+        jcbBackgrounds = new JComboBox(infoCombo);
+        jcbBackgrounds.setEditable(true);
+        JLabel jlFons = new JLabel("Fons:");
+        jpFons.add(jlFons);
+        jpFons.add(jcbBackgrounds);
         jp4.add(jpFons);
 
         //Boto Crear
-        jbProjecte = new JButton("Crear Projecte");
+        jbProjecte = new JButton("CREAR PROJECTE");
         jp4.add(jbProjecte);
-        add(jp4, BorderLayout.SOUTH);
+        this.add(jp4, BorderLayout.SOUTH);
         //add(jpInf, BorderLayout.SOUTH);
-        //this.setVisible(true);
+        this.setVisible(false);
 
     }
 
@@ -172,9 +174,6 @@ public class NewProjectView extends JFrame {
         this.llista = llista;
     }
 
-    public void addMemberToList(){
-        //llista.add(jcbMembres.getSelectedItem().toString());
-    }
     public void registerController(NewProjectController c){
 
         jbMembre.setActionCommand("Afegir Membre");
@@ -193,11 +192,35 @@ public class NewProjectView extends JFrame {
         jbBack.addActionListener(c);
     }
 
-    public static void main(String[] args) {
-
-        NewProjectView vista = new NewProjectView();
-        vista.setVisible(true);
+    public void loadAllUserNames(String[] userNameList, String dontInclude){
+        int i;
+        for (i = 0; i < userNameList.length; i++){
+            if (!userNameList[i].equals(dontInclude)) {
+                this.jcbMembres.addItem(userNameList[i]);
+            }
+        }
+        this.setVisible(true);
     }
+
+    public void addUser(){
+        int pos = this.jcbMembres.getSelectedIndex();
+        String userSelected = this.jcbMembres.getSelectedItem().toString();
+        this.modelLlista.addElement(userSelected);
+        this.jcbMembres.removeItemAt(pos);
+    }
+
+    public void deleteFromList(){
+        int pos = this.llista.getSelectedIndex();
+        String name = this.llista.getSelectedValue();
+        this.jcbMembres.addItem(name);
+        this.modelLlista.removeElementAt(pos);
+    }
+
+//    public static void main(String[] args) {
+//
+//        NewProjectView vista = new NewProjectView();
+//        vista.setVisible(true);
+//    }
 }
 
 

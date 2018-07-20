@@ -4,29 +4,30 @@ package controller;
 //import Finestra.UserView;
 //import Network.ConnectionProject;
 
+import view.NewProjectView;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
 public class NewProjectController implements ActionListener {
 
-//    private UserView pantallaInicial;
-//    private Error error;
-//    private ConnectionProject connectionProject;
-//    private NewProjectView newProject;
+    private NewProjectView newProjectView;
 
-//    public NewProjectController(UserView pantallaInicial, ConnectionProject connectionProject, Error error, NewProjectView newProject){
-//
-//        this.pantallaInicial= pantallaInicial;
-//        this.error=error;
-//        this.connectionProject=connectionProject;
-//        this.newProject= newProject;
-//
-//        }
-
+    public NewProjectController(NewProjectView newProject){
+        this.newProjectView = newProject;
+    }
 
     @Override
- public  void actionPerformed(ActionEvent event) {
+    public  void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("Afegir Membre")){
+            newProjectView.addUser();
+        }
+
+        if (e.getActionCommand().equals("Eliminar Membre")){
+            newProjectView.deleteFromList();
+        }
 //
 //        String nom= newProject.getJtfNom().getText();
 //        LinkedList<Usuari> usuaris = new LinkedList<>();

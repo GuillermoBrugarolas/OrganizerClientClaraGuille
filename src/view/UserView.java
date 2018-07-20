@@ -109,5 +109,75 @@ public class UserView extends JFrame{
         this.setVisible(true);
     }
 
+    public void makeDialog(String message, boolean type){
+        if(type){
+            Dialog.DialogOK(message);
+        }else{
+            Dialog.DialogKO(message);
+        }
+    }
 
+    public JButton getJbProjecte() {
+        return jbProjecte;
+    }
+
+    public void setJbProjecte(JButton jbProjecte) {
+        this.jbProjecte = jbProjecte;
+    }
+
+    public JButton getJbEditar() {
+        return jbEditar;
+    }
+
+    public void setJbEditar(JButton jbEditar) {
+        this.jbEditar = jbEditar;
+    }
+
+    public JButton getJbEliminar() {
+        return jbEliminar;
+    }
+
+    public void setJbEliminar(JButton jbEliminar) {
+        this.jbEliminar = jbEliminar;
+    }
+
+    public JList<Project> getListLeft() {
+        return listLeft;
+    }
+
+    public void setListLeft(JList<Project> listLeft) {
+        this.listLeft = listLeft;
+    }
+
+    public JList<Project> getListRight() {
+        return listRight;
+    }
+
+    public void setListRight(JList<Project> listRight) {
+        this.listRight = listRight;
+    }
+
+    public JTextField getJtfId() {
+        return jtfId;
+    }
+
+    public void setJtfId(JTextField jtfId) {
+        this.jtfId = jtfId;
+    }
+
+    public JButton getJbId() {
+        return jbId;
+    }
+
+    public void setJbId(JButton jbId) {
+        this.jbId = jbId;
+    }
+
+    public JLabel getJlNomUsuari() {
+        return jlNomUsuari;
+    }
+
+    public void setJlNomUsuari(JLabel jlNomUsuari) {
+        this.jlNomUsuari = jlNomUsuari;
+    }
 }

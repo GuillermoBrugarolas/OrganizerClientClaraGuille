@@ -27,10 +27,10 @@ public class Elimina extends JFrame {
         add(myLabel, BorderLayout.WEST);
 
     }
-    public static void main(String[] args) {
-
-        Elimina error= new Elimina();
-        error.setVisible(true);
-        //c.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//
+//        Elimina error= new Elimina();
+//        error.setVisible(true);
+//        //c.setVisible(true);
+//    }
 }

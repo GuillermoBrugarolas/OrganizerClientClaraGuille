@@ -19,7 +19,7 @@ public class MainViewController implements ActionListener {
     private UserView userView;
     private Logics logics;
     private ServerCommunication serverCom;
-    public User user, userLoaded;
+    private User user, userLoaded;
 
     public MainViewController(MainView view, Logics logics, ServerCommunication serverCom){
         this.view = view;
@@ -45,25 +45,15 @@ public class MainViewController implements ActionListener {
         }
 
         if(((JButton)e.getSource()).getText().equals("Log in")){
-            if (view.checkLogFields() == true) {
+            if (view.checkLogFields()) {
                 message = "LOG:" + view.getLogInNameMail() + "/" + view.getLogInPassword();
                 if (serverCom.sendLogUser(message)) {
                     userView = new UserView();
-                    UserViewController userViewController = new UserViewController(user, userView, logics, serverCom, this);
-                    userView.registerController(userViewController);
                     message = "GET:" + view.getLogInNameMail();
                     userLoaded = serverCom.sendGetUser(message);
                     userView.loadUserData(userLoaded);
-//                message = "GETALLUSERS:";
-//                String sUsersList = serverCom.sendGetAllUsers(message);
-//                if (!sUsersList.equals("")) {
-//                    System.out.println(sUsersList);
-//                    String[] saUsersList = logics.parseAllUsersData(sUsersList);
-//                    //userView.refresh(user, saUsersList);
-//                    view.clearFields();
-//                } else {
-//                    view.makeDialog("Error loading all the users from database", false);
-//                }
+                    UserViewController userViewController = new UserViewController(userLoaded, userView, logics, serverCom, this);
+                    userView.registerController(userViewController);
                 }
             } else {
                 makeDialog("There are errors or blank spaces in your Log In form!", false);

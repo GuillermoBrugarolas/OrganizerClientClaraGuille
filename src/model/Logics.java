@@ -57,7 +57,7 @@ public class Logics {
     }
 
     public void registerMainViewController(MainViewController mainViewController){
-        this.mainViewController = mainViewController;
+        Logics.mainViewController = mainViewController;
     }
 
     public User parseBasicUserData(String userData){

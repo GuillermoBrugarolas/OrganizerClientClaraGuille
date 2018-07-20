@@ -87,26 +87,26 @@ public class MainView extends JFrame {
     }
 
     public String getRegNickname() {
-        return this.jtfNameReg.getText();
+        return jtfNameReg.getText();
     }
 
     public String getRegeMail() {
-        return this.jtfEMailReg.getText();
+        return jtfEMailReg.getText();
     }
 
     public String getRegPassword1() {
-        return String.valueOf(this.jpfPassword1Reg.getPassword());    }
+        return String.valueOf(jpfPassword1Reg.getPassword());    }
 
     public String getLogInNameMail() {
-        return this.jtfNameMailLogIn.getText();
+        return jtfNameMailLogIn.getText();
     }
 
     public String getLogInPassword() {
-        return String.valueOf(this.jpfPasswordLogIn.getPassword());
+        return String.valueOf(jpfPasswordLogIn.getPassword());
     }
 
     public boolean checkRegPasswords() {
-        return (Arrays.equals(this.jpfPassword1Reg.getPassword(), this.jpfPassword2Reg.getPassword()));
+        return (Arrays.equals(jpfPassword1Reg.getPassword(), jpfPassword2Reg.getPassword()));
     }
 
     public void clearFields() {
@@ -119,9 +119,6 @@ public class MainView extends JFrame {
     }
 
     public boolean checkLogFields(){
-        if (jtfNameMailLogIn.getText() == null || jtfNameMailLogIn.getText().equals("")){
-            return false;
-        }
-        return true;
+        return !(jtfNameMailLogIn.getText() == null || jtfNameMailLogIn.getText().equals(""));
     }
 }

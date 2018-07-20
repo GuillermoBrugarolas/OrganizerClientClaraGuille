@@ -331,15 +331,15 @@ public class PantallaPrincipal extends JFrame {
 
 
 
-    public static void main(String[] args) {
-        // CustomListView c= new CustomListView();
-        PantallaPrincipal vista = new PantallaPrincipal();
-        vista.setVisible(true);
-        //c.setVisible(true);
+//    public static void main(String[] args) {
+//        // CustomListView c= new CustomListView();
+//        PantallaPrincipal vista = new PantallaPrincipal();
+//        vista.setVisible(true);
+//        //c.setVisible(true);
+////    }
+//        //public void actualitzaProjecte(Project p){
+//
 //    }
-        //public void actualitzaProjecte(Project p){
-
-    }
 
     /*public class Tutorial extends Applet {
 

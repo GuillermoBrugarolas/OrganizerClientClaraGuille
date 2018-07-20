@@ -37,9 +37,9 @@ public class Etiqueta extends JFrame {
 
     }
 
-    public static void main(String[] args) {
-
-        Etiqueta vista = new Etiqueta();
-        vista.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//
+//        Etiqueta vista = new Etiqueta();
+//        vista.setVisible(true);
+//    }
 }

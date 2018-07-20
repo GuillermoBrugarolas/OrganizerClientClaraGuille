@@ -27,11 +27,11 @@ public class Error extends JFrame{
         add(myLabel, BorderLayout.WEST);
 
     }
-    public static void main(String[] args) {
-
-        Error error= new Error();
-        error.setVisible(true);
-        //c.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//
+//        Error error= new Error();
+//        error.setVisible(true);
+//        //c.setVisible(true);
+//    }
 
 }

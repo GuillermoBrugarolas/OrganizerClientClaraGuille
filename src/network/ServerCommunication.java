@@ -1,8 +1,6 @@
 package network;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -12,6 +10,8 @@ import controller.MainViewController;
 
 public class ServerCommunication extends Thread{
 	private Socket sServer;
+	private DataOutputStream dataOut;
+	private DataInputStream dataIn;
 	private ObjectInputStream objectIn;
 	private ObjectOutputStream objectOut;
 	private MainViewController mainViewController;
@@ -63,7 +63,7 @@ public class ServerCommunication extends Thread{
 			sServer = new Socket("127.0.0.1", portServer);
 			objectIn = new ObjectInputStream(sServer.getInputStream());
 			objectOut = new ObjectOutputStream(sServer.getOutputStream());
-			objectOut.writeObject((String)message);
+			objectOut.writeObject(message);
 			String answer;
 			answer = (String)objectIn.readObject();
 			if(answer.startsWith("OK")){
@@ -108,17 +108,20 @@ public class ServerCommunication extends Thread{
 	}
 
 	public String sendGetAllUsers(String message){
-		String answer="";
+        String answer = "";
 		try {
 			sServer = new Socket("127.0.0.1", portServer);
-			objectIn = new ObjectInputStream(sServer.getInputStream());
 			objectOut = new ObjectOutputStream(sServer.getOutputStream());
+			objectIn = new ObjectInputStream(sServer.getInputStream());
 			objectOut.writeObject((String)message);
-			answer = (String)objectIn.readObject();
-			if (answer.startsWith("KO")){
-				mainViewController.makeDialog("There are no users in the database!",false);
-			}
-			objectOut.close();
+			Object o = objectIn.readObject();
+			if (o instanceof String) {
+                answer = (String) o;
+                if (answer.startsWith("KO")) {
+                    mainViewController.makeDialog("There are no users in the database!", false);
+                }
+            }
+            objectOut.close();
 			objectIn.close();
 			sServer.close();
 		} catch (UnknownHostException e) {
@@ -126,8 +129,8 @@ public class ServerCommunication extends Thread{
 		} catch (IOException e) {
 			mainViewController.makeDialog("Coudn't connect with server", false);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return answer;
+            e.printStackTrace();
+        }
+        return answer;
 	}
 }

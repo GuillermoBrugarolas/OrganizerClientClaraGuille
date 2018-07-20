@@ -15,10 +15,10 @@ import java.awt.event.ActionListener;
  * Created by Guillermo Brugarolas on 14/05/2018.
  */
 public class UserViewController implements ActionListener {
-    public User user;
-    public Project project;
-    private UserView userView;
-    private Logics logics;
+    public User user = new User();
+    public Project project = new Project();
+    private UserView userView = new UserView();
+    private Logics logics = new Logics();
     private ServerCommunication serverCom;
     private MainViewController mainViewController;
 
@@ -35,24 +35,39 @@ public class UserViewController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(((JButton)e.getSource()).getText().equals("CREATE NEW PROJECT")){
-            project = new Project();
-            //userView.unlockProjectFields();
-            //userView.clearProjectFields();
-        }
-        if(((JButton)e.getSource()).getText().equals("Nou Projecte")){
+        String message, dontInclude="";
+        int nnn;
+        if((e.getActionCommand().equals("Nou Projecte"))){
             NewProjectView newProjectView = new NewProjectView();
+            NewProjectController newProjectController = new NewProjectController(newProjectView);
+            newProjectView.registerController(newProjectController);
+            message = "GEU:";
+            System.out.println("let's try");
+            String sUsersList = serverCom.sendGetAllUsers(message);
+            System.out.println(sUsersList);
+            if (!sUsersList.equals("")) {
+                String[] saUsersList = logics.parseAllUsersData(sUsersList);
+                int ll = saUsersList.length;
+                System.out.println(String.valueOf(ll));
+                for (nnn = 0; nnn < ll; nnn++){
+                    System.out.println(saUsersList[nnn]);
+                    if (saUsersList[nnn].equals(user.getNickname())){
+                        dontInclude = saUsersList[nnn];
+                    }
+                }
+                newProjectView.loadAllUserNames(saUsersList, dontInclude);
+            } else {
+                userView.makeDialog("Error loading all the users from database", false);
+            }
         }
-        if(((JButton)e.getSource()).getText().equals("Share")){
+
+        if((e.getActionCommand().equals("Eliminar Projecte"))){
 
         }
-        if(((JButton)e.getSource()).getText().equals("Add Column")){
+        if((e.getActionCommand().equals("Editar Projecte"))){
 
         }
-        if(((JButton)e.getSource()).getText().equals("ADD PROJECT")){
-
-        }
-        if(((JButton)e.getSource()).getText().equals("JOIN PROJECT")){
+        if (((JButton)e.getSource()).getText().equals("Search")){
 
         }
     }

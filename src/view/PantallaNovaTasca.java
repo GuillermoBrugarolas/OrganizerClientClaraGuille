@@ -142,11 +142,9 @@ public class PantallaNovaTasca extends JFrame {
 
     }*/
 
-
-
-    public static void main(String[] args) {
-
-        PantallaNovaTasca vista = new PantallaNovaTasca();
-        vista.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//
+//        PantallaNovaTasca vista = new PantallaNovaTasca();
+//        vista.setVisible(true);
+//    }
 }
