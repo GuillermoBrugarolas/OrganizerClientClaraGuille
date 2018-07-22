@@ -14,9 +14,10 @@ public class Project implements Serializable{
     private LinkedList<User> members;
     private String name;
     private String id;
-    private LinkedList<Column> columns;
+    private Column columnOne;
+    private Column columnTwo;
+    private Column columnThree;
     private String background;
-    private LinkedList<Tag> tags;
 
     public Project() {
     }
@@ -25,14 +26,15 @@ public class Project implements Serializable{
         this.name= name;
     }
 
-    public Project(User owner, LinkedList<User> members, String name, String id, LinkedList<Column> categories, String background, LinkedList<Tag> tags) {
+    public Project(User owner, LinkedList<User> members, String name, String id, Column c1, Column c2, Column c3, String background) {
         this.owner = owner;
         this.members = members;
         this.name = name;
         this.id = id;
-        this.columns = categories;
+        this.columnOne = c1;
+        this.columnOne = c2;
+        this.columnOne = c3;
         this.background = background;
-        this.tags = tags;
     }
 
     public User getOwner() {
@@ -51,6 +53,10 @@ public class Project implements Serializable{
         this.members = members;
     }
 
+    public void addMember(User member){
+        this.getMembers().add(member);
+    }
+
     public String getName() {
         return name;
     }
@@ -67,40 +73,34 @@ public class Project implements Serializable{
         this.id = id;
     }
 
-    public LinkedList<Column> getColumns() {
-        return columns;
+    public Column getColumn(int i) {
+        if (i == 1){
+            return this.columnOne;
+        } else if (i == 2){
+            return this.columnTwo;
+        } else if (i == 3){
+            return this.columnThree;
+        }
+        return null;
     }
 
-    public void setColumns(LinkedList<Column> columns) {
-        this.columns = columns;
+    public void setColumnOne(Column c1) {
+        this.columnOne = c1;
     }
 
+    public void setColumnTwo(Column c2) {
+        this.columnTwo = c2;
+    }
+
+    public void setColumnThree(Column c3) {
+        this.columnThree = c3;
+    }
     public String getBackground() {
         return background;
     }
 
     public void setBackground(String background) {
         this.background = background;
-    }
-
-    public LinkedList<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(LinkedList<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public void addTag(String name, String color){
-        Color c = Color.WHITE;
-        if (color.equals("red")){   c = Color.RED;}
-        else if (color.equals("blue")){ c = Color.BLUE;}
-        else if (color.equals("green")){ c = Color.GREEN;}
-        else if (color.equals("yellow")){ c = Color.YELLOW;}
-        else if (color.equals("purple")){ c = Color.MAGENTA;}
-        else if (color.equals("black")){ c = Color.BLACK;}
-        else if (color.equals("orange")){ c = Color.ORANGE;}
-        this.getTags().add(new Tag(name, c));
     }
 
     @Override

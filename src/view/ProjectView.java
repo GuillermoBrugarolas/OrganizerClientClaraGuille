@@ -1,5 +1,8 @@
 package view;
 
+import controller.ProjectViewController;
+import model.Column;
+import model.Project;
 import model.Task;
 
 import javax.swing.*;
@@ -7,7 +10,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.LinkedList;
 
-public class PantallaPrincipal extends JFrame {
+public class ProjectView extends JFrame {
 
 
     private JButton jbAfegir;
@@ -33,18 +36,21 @@ public class PantallaPrincipal extends JFrame {
     private JComboBox jcbMembres;
     private JTextArea jtaMembres;
     private  JLabel jlNameProject;
+    private JScrollPane jsp1;
+    private JScrollPane jsp2;
+    private JScrollPane jsp3;
 
 
-    public PantallaPrincipal() {
+    public ProjectView() {
 
-        setTitle("PantallaPrincipal");
+        setTitle("ProjectView");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(1000, 900);
 
 
         JPanel jpNameProject= new JPanel(new BorderLayout());
-        jlNameProject = new JLabel("Projecte 1");
+        jlNameProject = new JLabel();
         jlNameProject.setFont(new Font("Arial", Font.LAYOUT_LEFT_TO_RIGHT, 50));
         jpNameProject.add(jlNameProject);
         add(jpNameProject, BorderLayout.NORTH);
@@ -64,14 +70,13 @@ public class PantallaPrincipal extends JFrame {
 
         //JPanel jpColumna1 = new JPanel();
 
-            JScrollPane jsp1 = new JScrollPane();
-            jsp1.setBorder(BorderFactory.createTitledBorder("To Do"));
-            jsp1.setBounds(10, 20, 500, 400);
-            jsp1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-            jpTotal.add(jsp1);
+            this.jsp1 = new JScrollPane();;
+            this.jsp1.setBounds(10, 20, 500, 400);
+            this.jsp1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            jpTotal.add(this.jsp1);
 
             JPanel jpProva = new JPanel();
-            jsp1.setViewportView(jpProva);
+            this.jsp1.setViewportView(jpProva);
             jpProva.setLayout(new BorderLayout(0, 0));
 
             JPanel columnpanel = new JPanel();
@@ -93,9 +98,6 @@ public class PantallaPrincipal extends JFrame {
             titledBorder = new TitledBorder(UIManager.getBorder("TitledBorder.border"), "task1", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(2, 2, 2));
             jpTasca.setBorder(titledBorder);
 
-
-
-
             //CENTRE
             //jlName = new JLabel("Nom: ------ ");
             jlDescripcio = new JLabel(" Descripció: \n ------ ");
@@ -112,8 +114,6 @@ public class PantallaPrincipal extends JFrame {
 
                 //jpTasca.add(jlName, BorderLayout.NORTH);
 
-
-
         }
 
 
@@ -121,14 +121,13 @@ public class PantallaPrincipal extends JFrame {
 
 
         //JPanel jpColumna2 = new JPanel();
-        JScrollPane jsp2 = new JScrollPane();
-        jsp2.setBorder(BorderFactory.createTitledBorder("Doing"));
-        jsp2.setBounds(10,20,500,400);
-        jsp2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jpTotal.add(jsp2);
+        this.jsp2 = new JScrollPane();
+        this.jsp2.setBounds(10,20,500,400);
+        this.jsp2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jpTotal.add(this.jsp2);
 
         JPanel jpProva2= new JPanel();
-        jsp2.setViewportView(jpProva2);
+        this.jsp2.setViewportView(jpProva2);
         jpProva2.setLayout(new BorderLayout(5, 6));
 
         JPanel columnpanel2 = new JPanel();
@@ -171,14 +170,13 @@ public class PantallaPrincipal extends JFrame {
 
 
         //JPanel jpColumna3 = new JPanel();
-        JScrollPane jsp3 = new JScrollPane();
-        jsp3.setBorder(BorderFactory.createTitledBorder("Done"));
-        jsp3.setBounds(10,20,500,400);
-        jsp3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jpTotal.add(jsp3);
+        this.jsp3 = new JScrollPane();
+        this.jsp3.setBounds(10,20,500,400);
+        this.jsp3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jpTotal.add(this.jsp3);
 
         JPanel jpProva3= new JPanel();
-        jsp3.setViewportView(jpProva3);
+        this.jsp3.setViewportView(jpProva3);
         jpProva3.setLayout(new BorderLayout(0, 0));
 
         JPanel columnpanel3 = new JPanel();
@@ -219,8 +217,6 @@ public class PantallaPrincipal extends JFrame {
             jpTasca3.setBackground(SystemColor.gray);
 
         }
-
-
         JPanel jpDades = new JPanel(new BorderLayout());
         jpDades.setSize(600,500);
         JLabel jlMembres = new JLabel("  Membres: ");
@@ -237,8 +233,32 @@ public class PantallaPrincipal extends JFrame {
         jpTotal.add(jpDades);
 
         add(jpTotal, BorderLayout.CENTER);
+        this.setVisible(false);
+    }
 
+    public void registerController(ProjectViewController projectViewController){
 
+    }
+
+    public void loadProject(Project project){
+        String projectName, projectBackground, c1Name, c2Name, c3Name;
+        Column c1, c2, c3;
+        c1 = project.getColumn(1);
+        c2 = project.getColumn(2);
+        c3 = project.getColumn(3);
+//        c1Name = c1.getName();
+//        c2Name = c2.getName();
+//        c3Name = c3.getName();
+        projectBackground = project.getBackground();
+        projectName = project.getName();
+        JLabel jlImage;
+        jlImage = new JLabel(new ImageIcon(projectBackground+".jpg"));
+        this.jlNameProject.setText(projectName);
+        this.setContentPane(jlImage);
+        this.jsp1.setBorder(BorderFactory.createTitledBorder(c1.getName()));
+        this.jsp2.setBorder(BorderFactory.createTitledBorder(c2.getName()));
+        this.jsp3.setBorder(BorderFactory.createTitledBorder(c3.getName()));
+        this.setVisible(true);
     }
 
 
@@ -333,7 +353,7 @@ public class PantallaPrincipal extends JFrame {
 
 //    public static void main(String[] args) {
 //        // CustomListView c= new CustomListView();
-//        PantallaPrincipal vista = new PantallaPrincipal();
+//        ProjectView vista = new ProjectView();
 //        vista.setVisible(true);
 //        //c.setVisible(true);
 ////    }

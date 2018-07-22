@@ -67,6 +67,14 @@ public class User implements Serializable{
 		this.joinedProjects = joinedProjects;
 	}
 
+	public void addOwnProject(Project p){
+	    this.getOwnProjects().add(p);
+    }
+
+    public void addJoinedProject(Project pp){
+	    this.getJoinedProjects().add(pp);
+    }
+
 	@Override
 	public String toString() {
 		return "User{" +

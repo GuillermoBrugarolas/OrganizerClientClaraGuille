@@ -6,8 +6,6 @@ import model.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class UserView extends JFrame{
 
@@ -18,8 +16,8 @@ public class UserView extends JFrame{
     private JList<Project> listRight;
     private JTextField jtfId;
     private JButton jbId;
+    private JButton jbTancar;
     private JLabel jlNomUsuari;
-
 
 
     public UserView(){
@@ -41,7 +39,9 @@ public class UserView extends JFrame{
 
         JPanel jpBotons = new JPanel(new GridLayout(1,2));
         jbEditar= new JButton("Editar");
+        jbEditar.setBackground(new Color(250, 250, 100));
         jbEliminar = new JButton("Eliminar");
+        jbEliminar.setBackground(new Color(250, 250, 100));
         jpBotons.add(jbEditar);
         jpBotons.add(jbEliminar);
         jpMeu.add(listLeft);
@@ -51,17 +51,23 @@ public class UserView extends JFrame{
 
         JPanel jpCompartit= new JPanel(new BorderLayout());
         JPanel jpSearch= new JPanel(new GridLayout(1,3));
-        jbId= new JButton("Search");
-        jpSearch.add(new JLabel(" ID Project :"));
+        jbId= new JButton("Join");
+        jpSearch.add(new JLabel(" ID Project:"));
         jtfId= new JTextField();
         jpSearch.add(jtfId);
         jpSearch.add(jbId);
         jbProjecte= new JButton("Nou Projecte");
+        jbProjecte.setBackground(new Color(250, 250, 100));
         jpCompartit.add(jpSearch, BorderLayout.NORTH);
         listRight = new JList<Project>();
-        listRight.setBorder(BorderFactory.createTitledBorder("Projectes compartits: "));
+        listRight.setBorder(BorderFactory.createTitledBorder("Projectes compartits:"));
         jpCompartit.add(listRight);
-        jpCompartit.add(jbProjecte, BorderLayout.SOUTH);
+        JPanel jpProjectancar = new JPanel();
+        this.jbTancar = new JButton("Tancar Sessió");
+        this.jbTancar.setBackground(new Color(150, 150, 150));
+        jpProjectancar.add(this.jbProjecte);
+        jpProjectancar.add(this.jbTancar);
+        jpCompartit.add(jpProjectancar, BorderLayout.SOUTH);
         jpProjecte.add(jpMeu);
         jpProjecte.add(jpCompartit);
         add(jpProjecte);
@@ -70,9 +76,9 @@ public class UserView extends JFrame{
 
     }
 
-    public void removeObjectLeft(PantallaPrincipal pantallaPrincipal){
+    public void removeObjectLeft(ProjectView projectView){
 
-        remove(pantallaPrincipal);
+        remove(projectView);
     }
 
 
@@ -83,7 +89,10 @@ public class UserView extends JFrame{
         jbEliminar.addActionListener(c);
         jbEditar.setActionCommand("Editar Projecte");
         jbEditar.addActionListener(c);
-
+        jbId.setActionCommand("Join Project");
+        jbId.addActionListener(c);
+        jbTancar.setActionCommand("Tancar Sessió");
+        jbTancar.addActionListener(c);
     }
 
     public void loadUserData(User u){
@@ -179,5 +188,30 @@ public class UserView extends JFrame{
 
     public void setJlNomUsuari(JLabel jlNomUsuari) {
         this.jlNomUsuari = jlNomUsuari;
+    }
+
+    public boolean checkOwnProjSelected(){
+        return !this.listLeft.isSelectionEmpty();
+    }
+
+    public boolean checkJoinedProjSelected(){
+        return !this.listRight.isSelectionEmpty();
+    }
+
+    public Project getSelectedOwnProj(){
+        return (this.listLeft.getSelectedValue());
+    }
+
+    public Project getSelectedJoinedProj(){
+        return (this.listRight.getSelectedValue());
+    }
+
+    public void deleteProject(){
+        DefaultListModel dlm = (DefaultListModel)this.listLeft.getModel();
+        dlm.removeElementAt(this.listLeft.getSelectedIndex());
+    }
+
+    public String getID(){
+        return this.jtfId.getText();
     }
 }

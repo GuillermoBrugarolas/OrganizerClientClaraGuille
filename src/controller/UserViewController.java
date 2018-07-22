@@ -5,6 +5,7 @@ import model.Project;
 import model.User;
 import network.ServerCommunication;
 import view.NewProjectView;
+import view.ProjectView;
 import view.UserView;
 
 import javax.swing.*;
@@ -39,10 +40,9 @@ public class UserViewController implements ActionListener {
         int nnn;
         if((e.getActionCommand().equals("Nou Projecte"))){
             NewProjectView newProjectView = new NewProjectView();
-            NewProjectController newProjectController = new NewProjectController(newProjectView);
+            NewProjectController newProjectController = new NewProjectController(newProjectView, user, serverCom, logics, this);
             newProjectView.registerController(newProjectController);
             message = "GEU:";
-            System.out.println("let's try");
             String sUsersList = serverCom.sendGetAllUsers(message);
             System.out.println(sUsersList);
             if (!sUsersList.equals("")) {
@@ -62,14 +62,62 @@ public class UserViewController implements ActionListener {
         }
 
         if((e.getActionCommand().equals("Eliminar Projecte"))){
-
+            if (this.userView.checkOwnProjSelected()){
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog (null, "Do you really want to delete this project?","Warning",dialogButton);
+                if(dialogResult == JOptionPane.YES_OPTION) {
+                    String projectName;
+                    Project pp;
+                    pp = this.userView.getSelectedOwnProj();
+                    projectName = pp.getName();
+                    message = "DEL:"+projectName;
+                    if (this.serverCom.sendDeleteProject(message)){
+                        this.userView.deleteProject();
+                    } else {}
+                    // Delete
+                }
+            } else if (!this.userView.checkOwnProjSelected()){
+                if (this.userView.checkJoinedProjSelected()){
+                    this.makeDialog("You cannot delete a project you are not the owner of!", false);
+                } else if (!this.userView.checkJoinedProjSelected()){
+                    this.makeDialog("No project is selected!", false);
+                }
+            }
         }
         if((e.getActionCommand().equals("Editar Projecte"))){
-
+            Project chosenProject = new Project();
+            if (this.userView.checkOwnProjSelected()){
+                chosenProject = this.userView.getSelectedOwnProj();
+            } else if (!this.userView.checkOwnProjSelected()){
+                if (this.userView.checkJoinedProjSelected()){
+                    chosenProject = this.userView.getSelectedJoinedProj();
+                } else if (!this.userView.checkJoinedProjSelected()){
+                    this.makeDialog("No project selected!", false);
+                }
+            }
+            ProjectView projectView = new ProjectView();
+            ProjectViewController projectViewController = new ProjectViewController(projectView);
+            projectView.registerController(projectViewController);
+            projectView.loadProject(chosenProject);
         }
-        if (((JButton)e.getSource()).getText().equals("Search")){
-
+        if((e.getActionCommand().equals("Tancar Sessió"))){
+            this.userView.dispose();
+            this.serverCom.stop();
         }
+        if ((e.getActionCommand().equals("Join Project"))){
+            message = "JIN:"+user.getNickname()+"/"+this.userView.getID();
+            System.out.println(message);
+            if (serverCom.sendJoinProject(message)){
+            }
+        }
+    }
+
+    public void loadUser(User user){
+        this.userView.loadUserData(user);
+    }
+
+    public void makeDialog(String message, boolean type){
+        this.userView.makeDialog(message,type);
     }
 
     public User getUser() {

@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import controller.UserViewController;
+import model.Project;
 import model.User;
 import controller.MainViewController;
 
@@ -133,4 +134,91 @@ public class ServerCommunication extends Thread{
         }
         return answer;
 	}
+
+	public boolean sendNewProject(Project p){
+        boolean added = false;
+        try {
+            sServer = new Socket("127.0.0.1", portServer);
+            objectIn = new ObjectInputStream(sServer.getInputStream());
+            objectOut = new ObjectOutputStream(sServer.getOutputStream());
+            objectOut.writeObject((Project)p);
+            String answer;
+            answer = (String)objectIn.readObject();
+            if(answer.startsWith("OK")){
+                mainViewController.makeDialog("The new project has been successfully added to the database!",true);
+                added = true;
+            }else if (answer.startsWith("KO")){
+                mainViewController.makeDialog("The new project could not be added to the database!",false);
+                added = false;
+            }
+            objectOut.close();
+            objectIn.close();
+            sServer.close();
+        } catch (UnknownHostException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (IOException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return added;
+    }
+
+    public boolean sendDeleteProject(String message){
+        boolean next = false;
+        try {
+            sServer = new Socket("127.0.0.1", portServer);
+            objectIn = new ObjectInputStream(sServer.getInputStream());
+            objectOut = new ObjectOutputStream(sServer.getOutputStream());
+            objectOut.writeObject((String)message);
+            String answer;
+            answer = (String)objectIn.readObject();
+            if(answer.startsWith("OK")){
+                mainViewController.makeDialog("The project has been successfully deleted!",true);
+                next = true;
+            }else if (answer.startsWith("KO")){
+                mainViewController.makeDialog("The project could not be deleted!",false);
+                next = false;
+            }
+            objectOut.close();
+            objectIn.close();
+            sServer.close();
+        } catch (UnknownHostException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (IOException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return next;
+    }
+
+    public boolean sendJoinProject(String message){
+        boolean ok = false;
+        try {
+            sServer = new Socket("127.0.0.1", portServer);
+            objectIn = new ObjectInputStream(sServer.getInputStream());
+            objectOut = new ObjectOutputStream(sServer.getOutputStream());
+            objectOut.writeObject((String)message);
+            String answer;
+            answer = (String)objectIn.readObject();
+            if(answer.startsWith("OK")){
+                mainViewController.makeDialog("You have successfully joined the project!",true);
+                ok = true;
+            }else if (answer.startsWith("KO")){
+                mainViewController.makeDialog("The project does not exist!",false);
+                ok = false;
+            }
+            objectOut.close();
+            objectIn.close();
+            sServer.close();
+        } catch (UnknownHostException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (IOException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
 }
