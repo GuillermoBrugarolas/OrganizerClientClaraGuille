@@ -105,11 +105,9 @@ public class Project implements Serializable{
 
     @Override
     public String toString() {
-        return "Project{" +
-                "name='" + name +
+        return "Project{" + name +
                 ", owner=" + owner.getNickname() +
                 ", id='" + id +
-                ", background=" + background +
                 '}';
     }
 }

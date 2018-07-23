@@ -2,6 +2,7 @@ package view;
 
 import controller.NewProjectController;
 import controller.ProjectViewController;
+import model.Task;
 import model.User;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ public class NewTaskView extends JFrame {
     private JComboBox<String> jcbEtiqueta;
     private JComboBox<String> jcbUser;
     private JSpinner jsPos;
+    private JButton jbUpdate;
     private JButton jbAddTask;
     private JButton jbCancel;
     private JTextArea jtDescripcio;
@@ -32,46 +34,50 @@ public class NewTaskView extends JFrame {
 
         JPanel jpNorth = new JPanel(new GridLayout(3,2));
         JLabel jlNom= new JLabel("Task Name:");
-        jtfNom= new JTextField();
+        this.jtfNom= new JTextField();
         JLabel jlOrdre = new JLabel("Column:");
         SpinnerNumberModel jsPosicio = new SpinnerNumberModel(1,1, 3,1);
-        jsPos= new JSpinner(jsPosicio);
+        this.jsPos= new JSpinner(jsPosicio);
         JLabel jlDescripcio= new JLabel("Description:");
         jpNorth.add(jlNom);
-        jpNorth.add(jtfNom);
+        jpNorth.add(this.jtfNom);
         jpNorth.add(jlOrdre);
-        jpNorth.add(jsPos);
+        jpNorth.add(this.jsPos);
         jpNorth.add(jlDescripcio);
         jpNorth.setSize(600,200);
         jpGeneral.add(jpNorth);
 
         JPanel jpCentre= new JPanel();
-        jtDescripcio= new JTextArea();
+        this.jtDescripcio= new JTextArea();
         jpCentre.setSize(600,30);
-        jpGeneral.add(jtDescripcio);
+        jpGeneral.add(this.jtDescripcio);
 
         JPanel jpEtiqueta = new JPanel(new GridLayout(1,2));
         JLabel jlEtiqueta = new JLabel("Tag:");
         String[] infoCombo = {"Minor", "Moderate", "Important", "Urgent", "Critical"};
-        jcbEtiqueta = new JComboBox<>(infoCombo);
+        this.jcbEtiqueta = new JComboBox<>(infoCombo);
         jpEtiqueta.add(jlEtiqueta);
-        jpEtiqueta.add(jcbEtiqueta);
+        jpEtiqueta.add(this.jcbEtiqueta);
         jpGeneral.add(jpEtiqueta);
 
         JPanel jpUser= new JPanel(new GridLayout(1,2));
         JLabel jlUsuari=new JLabel("User in charge:");
-        jcbUser = new JComboBox<String>();
+        this.jcbUser = new JComboBox<String>();
         jpUser.add(jlUsuari);
-        jpUser.add(jcbUser);
+        jpUser.add(this.jcbUser);
         jpGeneral.add(jpUser);
 
-        JPanel jpBotton = new JPanel(new GridLayout(1, 2));
-        jbAddTask = new JButton("Add Task");
-        jbCancel = new JButton("Cancel");
-        jbAddTask.setSize(200,50);
-        jbCancel.setSize(200,50);
-        jpBotton.add(jbAddTask);
-        jpBotton.add(jbCancel);
+        JPanel jpBotton = new JPanel(new GridLayout(1, 3));
+        this.jbUpdate = new JButton("Update Task");
+        this.jbUpdate.setEnabled(false);
+        this.jbAddTask = new JButton("Add Task");
+        this.jbCancel = new JButton("Cancel");
+        this.jbUpdate.setSize(200, 50);
+        this.jbAddTask.setSize(200,50);
+        this.jbCancel.setSize(200,50);
+        jpBotton.add(this.jbUpdate);
+        jpBotton.add(this.jbAddTask);
+        jpBotton.add(this.jbCancel);
         jpGeneral.add(jpBotton);
 
         this.add(jpGeneral);
@@ -120,6 +126,13 @@ public class NewTaskView extends JFrame {
         jbCancel.addActionListener(c);
     }
 
+    public void registerController3(ProjectViewController c){
+        jbUpdate.setActionCommand("Actualitzar Tasca");
+        jbUpdate.addActionListener(c);
+        jbCancel.setActionCommand("Cancelar NovaTasca");
+        jbCancel.addActionListener(c);
+    }
+
     public void loadAllMembers(Object[] members){
         int len = members.length;
         User uu;
@@ -129,5 +142,15 @@ public class NewTaskView extends JFrame {
             this.jcbUser.addItem(uu.getNickname());
         }
         this.setVisible(true);
+    }
+
+    public void loadCurrentState(Task tt){
+        this.jbUpdate.setEnabled(true);
+        this.jbAddTask.setEnabled(false);
+        this.jtfNom.setText(tt.getName());
+        this.jsPos.setValue(tt.getColumn());
+        this.jtDescripcio.setText(tt.getDescription());
+        this.jcbEtiqueta.setSelectedItem(tt.getTag().getName());
+        this.jcbUser.setSelectedItem((String)tt.getUserAssigned().getNickname());
     }
 }

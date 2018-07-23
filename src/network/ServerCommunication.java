@@ -116,7 +116,7 @@ public class ServerCommunication extends Thread{
 			objectIn = new ObjectInputStream(sServer.getInputStream());
 			objectOut = new ObjectOutputStream(sServer.getOutputStream());
 			objectOut.writeObject((String)message);
-			answer = (Project) objectIn.readObject();
+			answer = (Project)objectIn.readObject();
 			objectOut.close();
 			objectIn.close();
 			sServer.close();
@@ -254,10 +254,68 @@ public class ServerCommunication extends Thread{
             String answer;
             answer = (String)objectIn.readObject();
             if(answer.startsWith("OK")){
-                mainViewController.makeDialog("You have successfully joined the project!",true);
+                mainViewController.makeDialog("Successfully joined the project!",true);
                 ok = true;
             }else if (answer.startsWith("KO")){
-                mainViewController.makeDialog("The project does not exist!",false);
+                mainViewController.makeDialog("Could not join project / project does not exist!",false);
+                ok = false;
+            }
+            objectOut.close();
+            objectIn.close();
+            sServer.close();
+        } catch (UnknownHostException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (IOException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
+    public boolean sendDeleteMember(String message){
+        boolean ok = false;
+        try {
+            sServer = new Socket("127.0.0.1", portServer);
+            objectIn = new ObjectInputStream(sServer.getInputStream());
+            objectOut = new ObjectOutputStream(sServer.getOutputStream());
+            objectOut.writeObject((String)message);
+            String answer;
+            answer = (String)objectIn.readObject();
+            if(answer.startsWith("OK")){
+                mainViewController.makeDialog("Successfully removed from the project!",true);
+                ok = true;
+            }else if (answer.startsWith("KO")){
+                mainViewController.makeDialog("Could not be removed from the project!",false);
+                ok = false;
+            }
+            objectOut.close();
+            objectIn.close();
+            sServer.close();
+        } catch (UnknownHostException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (IOException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
+    public boolean sendDeleteTask(String message){
+        boolean ok = false;
+        try {
+            sServer = new Socket("127.0.0.1", portServer);
+            objectIn = new ObjectInputStream(sServer.getInputStream());
+            objectOut = new ObjectOutputStream(sServer.getOutputStream());
+            objectOut.writeObject((String)message);
+            String answer;
+            answer = (String)objectIn.readObject();
+            if(answer.startsWith("OK")){
+                mainViewController.makeDialog("Successfully removed task from the database!",true);
+                ok = true;
+            }else if (answer.startsWith("KO")){
+                mainViewController.makeDialog("Could not remove task from the database!",false);
                 ok = false;
             }
             objectOut.close();

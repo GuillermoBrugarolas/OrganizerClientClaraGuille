@@ -24,9 +24,12 @@ public class ProjectView extends JFrame {
     private LinkedList<Task> tasks3 = new LinkedList<Task>();
     private LinkedList<User> totsUsuaris;
     private LinkedList<User> usuarisProjecte;
-    private JLabel jlDescripcio;
-    private JLabel jlDescripcio2;
-    private JLabel jlDescripcio3;
+    private JTextArea jtaDescripcio;
+    private JTextArea jtaDescripcio2;
+    private JTextArea jtaDescripcio3;
+    private JButton[][] jbCol1;
+    private JButton[][] jbCol2;
+    private JButton[][] jbCol3;
     private JButton jbEliminar;
     private JButton jbEditar;
     private JButton jbDelete;
@@ -77,7 +80,7 @@ public class ProjectView extends JFrame {
             backgroundImage.getScaledInstance(1000, 800, Image.SCALE_DEFAULT);
             this.setContentPane(new JPanel(new BorderLayout()) {
                 @Override public void paintComponent(Graphics g) {
-                    g.drawImage(backgroundImage, 0, 0, null);
+                    g.drawImage(backgroundImage, 0, 0, this);
                 }
             });
         } catch (IOException e) {
@@ -88,7 +91,7 @@ public class ProjectView extends JFrame {
         jpNameProject.setOpaque(false);
         this.jlNameProject = new JLabel();
         this.jlNameProject.setText(projectName);
-        this.jlNameProject.setBackground(new Color(100, 0, 100));
+        this.jlNameProject.setForeground(new Color(255, 255, 255));
         this.jlNameProject.setFont(new Font("Arial", Font.LAYOUT_LEFT_TO_RIGHT, 50));
         jpNameProject.add(jlNameProject);
         this.jbCloseSession = new JButton("Tancar Sessió");
@@ -102,7 +105,7 @@ public class ProjectView extends JFrame {
 
         this.jsp1 = new JScrollPane();
         this.jsp1.setOpaque(false);
-        this.jsp1.setBorder(BorderFactory.createTitledBorder(c1Name));
+        this.jsp1.setBorder(BorderFactory.createTitledBorder(null, c1Name, TitledBorder.CENTER, TitledBorder.TOP, new Font(null, Font.PLAIN,20), Color.BLACK));
         this.jsp1.setBounds(10, 20, 500, 400);
         this.jsp1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         this.jpTotal.add(this.jsp1);
@@ -117,32 +120,35 @@ public class ProjectView extends JFrame {
         columnpanel.setOpaque(false);
         
         int size1 = this.tasks1.size();
+        this.jbCol1 = new JButton[size1][2];
         for(int i = 0; i < size1 ; i++) {
                 //Vinyeta de cada tasca
             JPanel jpTasca = new JPanel(new BorderLayout());
-            jpTasca.setPreferredSize(new Dimension(100, 100));
+            jpTasca.setPreferredSize(new Dimension(100, 75));
 
             //D'ALT
-            this.titledBorder = new TitledBorder(UIManager.getBorder("TitledBorder.border"), (this.tasks1.get(i).getName()), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(2, 2, 2));
+            this.titledBorder = new TitledBorder(UIManager.getBorder("TitledBorder.border"), (this.tasks1.get(i).getName()), TitledBorder.LEADING, TitledBorder.TOP, new Font(null, 0, 16), Color.BLACK);
             jpTasca.setBorder(this.titledBorder);
 
             //CENTRE
             this.jpCentre1 = new JPanel();
             this.jpCentre1.setLayout(new BorderLayout());
-            this.jlDescripcio = new JLabel(" Descripció: "+tasks1.get(i).getDescription());
-            this.jpCentre1.add(this.jlDescripcio, BorderLayout.NORTH);
+            this.jtaDescripcio = new JTextArea(" Descripció: "+tasks1.get(i).getDescription());
+            this.jtaDescripcio.setEditable(false);
+            this.jtaDescripcio.setOpaque(false);
+            this.jpCentre1.add(this.jtaDescripcio, BorderLayout.CENTER);
             this.jlUserAssigned = new JLabel();
             String nick = this.tasks1.get(i).getUserAssigned().getNickname();
-            this.jlUserAssigned.setText("USER ASSIGNED: "+nick);
+            this.jlUserAssigned.setText("ASSIGNED TO: "+nick);
             this.jpCentre1.add(this.jlUserAssigned, BorderLayout.SOUTH);
             jpTasca.add(this.jpCentre1, BorderLayout.CENTER);
 
             //BAIX
             JPanel jpButton = new JPanel(new GridLayout(1, 2));
-            jbEditar = new JButton("Editar");
-            jbEliminar = new JButton("Eliminar");
-            jpButton.add(this.jbEditar);
-            jpButton.add(this.jbEliminar);
+            this.jbCol1[i][0] = new JButton("Editar1"+(i+1));
+            this.jbCol1[i][1] = new JButton("Eliminar1"+(i+1));
+            jpButton.add(this.jbCol1[i][0]);
+            jpButton.add(this.jbCol1[i][1]);
             String tag = this.tasks1.get(i).getTag().getName();
             if (tag.equals("Minor")){
                 this.jpCentre1.setBackground(new Color(100, 100, 255));
@@ -167,7 +173,7 @@ public class ProjectView extends JFrame {
             
         this.jsp2 = new JScrollPane();
         this.jsp2.setOpaque(false);
-        this.jsp2.setBorder(BorderFactory.createTitledBorder(c2Name));
+        this.jsp2.setBorder(BorderFactory.createTitledBorder(null, c2Name, TitledBorder.CENTER, TitledBorder.TOP, new Font(null, Font.PLAIN,20), Color.BLACK));
         this.jsp2.setBounds(10,20,500,400);
         this.jsp2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         this.jpTotal.add(this.jsp2);
@@ -182,33 +188,36 @@ public class ProjectView extends JFrame {
         columnpanel2.setBackground(Color.black);
         
         int size2 = project.getColumn(2).getTasks().size();
+        this.jbCol2 = new JButton[size2][2];
         for(int ii=0; ii < size2; ii++) {
             
             //Vinyeta de cada tasca
             JPanel jpTasca2 = new JPanel(new BorderLayout());
-            jpTasca2.setPreferredSize(new Dimension(100, 90));
+            jpTasca2.setPreferredSize(new Dimension(100, 75));
 
             //D'ALT
-            this.titledBorder = new TitledBorder(UIManager.getBorder("TitledBorder.border"), (this.tasks2.get(ii).getName()), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(2, 2, 2));
+            this.titledBorder = new TitledBorder(UIManager.getBorder("TitledBorder.border"), (this.tasks2.get(ii).getName()), TitledBorder.LEADING, TitledBorder.TOP, new Font(null, 0, 16), Color.BLACK);
             jpTasca2.setBorder(this.titledBorder);
 
             //CENTRE
             this.jpCentre2 = new JPanel();
             this.jpCentre2.setLayout(new BorderLayout());
-            this.jlDescripcio2 = new JLabel(" Descripció: "+this.tasks2.get(ii).getDescription());
-            this.jpCentre2.add(this.jlDescripcio2, BorderLayout.NORTH);
+            this.jtaDescripcio2 = new JTextArea(" Descripció: "+this.tasks2.get(ii).getDescription());
+            this.jtaDescripcio2.setEditable(false);
+            this.jtaDescripcio2.setOpaque(false);
+            this.jpCentre2.add(this.jtaDescripcio2, BorderLayout.CENTER);
             this.jlUserAssigned2 = new JLabel();
             String nick2 = this.tasks2.get(ii).getUserAssigned().getNickname();
-            this.jlUserAssigned2.setText("USER ASSIGNED: "+nick2);
+            this.jlUserAssigned2.setText("ASSIGNED TO: "+nick2);
             this.jpCentre2.add(this.jlUserAssigned2, BorderLayout.SOUTH);
             jpTasca2.add(this.jpCentre2, BorderLayout.CENTER);
 
             //BAIX
             JPanel jpButton2 = new JPanel(new GridLayout(1, 2));
-            jbEditar = new JButton("Editar");
-            jbEliminar = new JButton("Eliminar");
-            jpButton2.add(this.jbEditar);
-            jpButton2.add(this.jbEliminar);
+            this.jbCol2[ii][0] = new JButton("Editar2"+(ii+1));
+            this.jbCol2[ii][1] = new JButton("Eliminar2"+(ii+1));
+            jpButton2.add(this.jbCol2[ii][0]);
+            jpButton2.add(this.jbCol2[ii][1]);
             String tag2 = this.tasks2.get(ii).getTag().getName();
             if (tag2.equals("Minor")){
                 this.jpCentre2.setBackground(new Color(100, 100, 255));
@@ -234,7 +243,7 @@ public class ProjectView extends JFrame {
         //JPanel jpColumna3 = new JPanel();
         this.jsp3 = new JScrollPane();
         this.jsp3.setOpaque(false);
-        this.jsp3.setBorder(BorderFactory.createTitledBorder(c3Name));
+        this.jsp3.setBorder(BorderFactory.createTitledBorder(null, c3Name, TitledBorder.CENTER, TitledBorder.TOP, new Font(null, Font.PLAIN,20), Color.BLACK));
         this.jsp3.setBounds(10,20,500,400);
         this.jsp3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jpTotal.add(this.jsp3);
@@ -249,32 +258,35 @@ public class ProjectView extends JFrame {
         columnpanel3.setBackground(Color.black);
         
         int size3 = project.getColumn(3).getTasks().size();
+        this.jbCol3 = new JButton[size3][2];
         for(int iii = 0; iii < size3 ; iii++) {
             //Vinyeta de cada tasca
             JPanel jpTasca3 = new JPanel(new BorderLayout());
-            jpTasca3.setPreferredSize(new Dimension(100, 90));
+            jpTasca3.setPreferredSize(new Dimension(100, 75));
 
             //D'ALT
-            this.titledBorder = new TitledBorder(UIManager.getBorder("TitledBorder.border"), (this.tasks3.get(iii).getName()), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(2, 2, 2));
+            this.titledBorder = new TitledBorder(UIManager.getBorder("TitledBorder.border"), (this.tasks3.get(iii).getName()), TitledBorder.LEADING, TitledBorder.TOP, new Font(null, 0, 16), Color.BLACK);
             jpTasca3.setBorder(this.titledBorder);
 
             //CENTRE
             this.jpCentre3 = new JPanel();
             this.jpCentre3.setLayout(new BorderLayout());
-            this.jlDescripcio3 = new JLabel(" Descripció: "+this.tasks3.get(iii).getDescription());
-            this.jpCentre3.add(this.jlDescripcio3, BorderLayout.NORTH);
+            this.jtaDescripcio3 = new JTextArea(" Descripció: "+this.tasks3.get(iii).getDescription());
+            this.jtaDescripcio3.setEditable(false);
+            this.jtaDescripcio3.setOpaque(false);
+            this.jpCentre3.add(this.jtaDescripcio3, BorderLayout.CENTER);
             this.jlUserAssigned3 = new JLabel();
             String nick3 = this.tasks3.get(iii).getUserAssigned().getNickname();
-            this.jlUserAssigned3.setText("USER ASSIGNED: "+nick3);
+            this.jlUserAssigned3.setText("ASSIGNED TO: "+nick3);
             this.jpCentre3.add(this.jlUserAssigned3, BorderLayout.SOUTH);
             jpTasca3.add(this.jpCentre3, BorderLayout.CENTER);
 
             //BAIX
             JPanel jpButton3 = new JPanel(new GridLayout(1, 2));
-            jbEditar = new JButton("Editar");
-            jbEliminar = new JButton("Eliminar");
-            jpButton3.add(this.jbEditar);
-            jpButton3.add(this.jbEliminar);
+            this.jbCol3[iii][0] = new JButton("Editar3"+(iii+1));
+            this.jbCol3[iii][1] = new JButton("Eliminar3"+(iii+1));
+            jpButton3.add(this.jbCol3[iii][0]);
+            jpButton3.add(this.jbCol3[iii][1]);
             String tag3 = this.tasks3.get(iii).getTag().getName();
             if (tag3.equals("Minor")){
                 jpTasca3.setBackground(new Color(100, 100, 255));
@@ -312,17 +324,20 @@ public class ProjectView extends JFrame {
         this.jcbUser = new JComboBox<String>();
 
         jpUsuaris.setBorder(BorderFactory.createTitledBorder("Usuaris:"));
+        jpUsuaris.setSize(600, 400);
         jpUsuaris.add(this.jcbUser, BorderLayout.NORTH);
 
 
         DefaultListModel<String> model = new DefaultListModel<>();
         this.jlistMembres = new JList(model);
-        this.jlistMembres.setBorder(BorderFactory.createTitledBorder(" Usuaris del projecte: "));
+        this.jlistMembres.setPreferredSize(new Dimension(600, 200));
+        this.jlistMembres.setBorder(BorderFactory.createTitledBorder("Usuaris del projecte:"));
         for(User u: this.usuarisProjecte){
             model.addElement(u.getNickname());
         }
-
-        jpUsuaris.add(this.jlistMembres, BorderLayout.CENTER);
+        JScrollPane jspListMembres = new JScrollPane(this.jlistMembres);
+        jspListMembres.setPreferredSize(new Dimension(300, 400));
+        jpUsuaris.add(jspListMembres, BorderLayout.CENTER);
         this.jbAfegir = new JButton("Afegir");
         this.jbDelete = new JButton("Eliminar");
         this.jbNovaTasca = new JButton("Nova Tasca");
@@ -337,7 +352,7 @@ public class ProjectView extends JFrame {
         add(this.jpTotal, BorderLayout.CENTER);
 
         this.setTitle(project.getName());
-        this.setSize(1000, 800);
+        this.setSize(1000, 600);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(false);
@@ -348,6 +363,29 @@ public class ProjectView extends JFrame {
         this.jbCloseSession.addActionListener(projectViewController);
         this.jbNovaTasca.setActionCommand("Nova Tasca");
         this.jbNovaTasca.addActionListener(projectViewController);
+        this.jbAfegir.setActionCommand("Afegir Usuari");
+        this.jbAfegir.addActionListener(projectViewController);
+        this.jbDelete.setActionCommand("Eliminar Usuari");
+        this.jbDelete.addActionListener(projectViewController);
+        int i, j;
+        for (i = 0; i < 2; i++){
+            for (j = 0; j < this.jbCol1.length; j++){
+                this.jbCol1[j][i].setActionCommand("Tasca1"+(j+1)+(i));
+                this.jbCol1[j][i].addActionListener(projectViewController);
+            }
+        }
+        for (i = 0; i < 2; i++){
+            for (j = 0; j < this.jbCol2.length; j++){
+                this.jbCol2[j][i].setActionCommand("Tasca2"+(j+1)+(i));
+                this.jbCol2[j][i].addActionListener(projectViewController);
+            }
+        }
+        for (i = 0; i < 2; i++){
+            for (j = 0; j < this.jbCol3.length; j++){
+                this.jbCol3[j][i].setActionCommand("Tasca3"+(j+1)+(i));
+                this.jbCol3[j][i].addActionListener(projectViewController);
+            }
+        }
     }
 
     public void loadAllUsers(String[] users){
@@ -358,115 +396,36 @@ public class ProjectView extends JFrame {
         this.setVisible(true);
     }
 
-
-
-        /*LinkedList<String> descriptions = new LinkedList<>();
-
-
-        for(Task t: tasques) {
-            String label  = t.getTag() +"\n" +t.getName() +"\n" + t.getDescription() ;
-            descriptions.add(label);
+    public void makeDialog(String message, boolean type){
+        if(type){
+            Dialog.DialogOK(message);
+        }else{
+            Dialog.DialogKO(message);
         }
-        JList<String> jlList=  new JList<>(descriptions);
-
-        JScrollPane scrollPane1 = new JScrollPane(jlList);
-        jpTasca.add(scrollPane1);
-
-
-
-        ListSelectionListener listSelectionListener = new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                System.out.println("Name:" + listSelectionEvent.getClass().getName());
-
-            }
-
-            MouseListener mouseListener = new MouseAdapter() {
-                public void mouseClicked(MouseEvent mouseEvent) {
-                    JList theList = (JList) mouseEvent.getSource();
-                    if (mouseEvent.getClickCount() == 2) {
-                        int index = theList.locationToIndex(mouseEvent.getPoint());
-                        if (index >= 0) {
-                            Object o = theList.getModel().getElementAt(index);
-                            System.out.println("Double-clicked on: " + o.toString());
-                        }
-                    }
-                }
-
-                //System.out.println("Description:" + listSelectionEvent.getClass().toGenericString());
-
-                // JScrollPane jspTotal = new JScrollPane();
-                //ObservableList<Task> tasques = FXCollections.observableArrayList();
-
-*/
-       /* JPanel jpTasca = new JPanel();
-
-        for(Task t: tasques) {
-            tasques.addAll(new Task(t.getName(),t.getPosition()));
-            tasques.addAll(new CustomThing(t.getName(), 123), new CustomThing("Horse", 456), new CustomThing("Jam", 789));
-
-        }
-
-
-
-        ListView<Task> listView = new ListView<Task>(tasques);
-        listView.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>() {
-            public ListCell<Task> call(ListView<Task> arg0) {
-                return new ListCell<Task>() {
-
-                    @Override
-                    protected void updateItem(Task item, boolean bln) {
-                        super.updateItem(item, bln);
-                        if (item != null) {
-                            VBox vBox = new VBox(new Text(item.getName()), new Text(String.format("%d $", item.getTag())));
-                            Label graphic= new Label("[Graphic]");
-                            HBox hBox = new HBox(vBox);
-                            hBox.setSpacing(10);
-                            setGraphic(hBox);
-                        }
-                    }
-
-                };
-            }
-
-        });
-
-        JPanel jpView= new JPanel(new GridLayout(1,4));
-        JScrollPane jspColumna= new JScrollPane();
-        jspColumna.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jbAfegir= new JButton("Afegir Task");
-        //jpView.add(listView);
-        jpView.add(jbAfegir);
-        jpView.add(jspColumna);
     }
-*/
 
+    public String getSelectedUser(){
+        return (this.jcbUser.getSelectedItem().toString());
+    }
 
-    //Finestretes de tasques internes
+    public void addMember(String newMember){
+        DefaultListModel model = (DefaultListModel)this.jlistMembres.getModel();
+        model.addElement((String)newMember);
+    }
 
+    public boolean checkSelectedMember(){
+        return (!this.jlistMembres.isSelectionEmpty());
+    }
 
-    //};
+    public String getSelectedMember(){
+        return (this.jlistMembres.getSelectedValue());
+    }
 
-
-
-//    public static void main(String[] args) {
-//        // CustomListView c= new CustomListView();
-//        ProjectView vista = new ProjectView();
-//        vista.setVisible(true);
-//        //c.setVisible(true);
-////    }
-//        //public void actualitzaProjecte(Project p){
-//
-//    }
-
-    /*public class Tutorial extends Applet {
-
-        public void paint(Graphics x){
-            x.draw3DRect(5,5,5,5,true);
-            x.setColor(Color.RED);
-            x.fill3DRect(5,5,5,5,true);
-        }
-
-    }*/
+    public void deleteMember(){
+        int i = this.jlistMembres.getSelectedIndex();
+        DefaultListModel listModel = (DefaultListModel)this.jlistMembres.getModel();
+        listModel.removeElementAt(i);
+    }
 }
 
 

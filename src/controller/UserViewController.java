@@ -16,8 +16,8 @@ import java.awt.event.ActionListener;
  * Created by Guillermo Brugarolas on 14/05/2018.
  */
 public class UserViewController implements ActionListener {
-    public User user = new User();
-    public Project project = new Project();
+    private User user = new User();
+    private Project projectToLoad;
     private UserView userView = new UserView();
     private Logics logics = new Logics();
     private ServerCommunication serverCom;
@@ -93,13 +93,12 @@ public class UserViewController implements ActionListener {
                     this.makeDialog("No project selected!", false);
                 }
             }
-            Project projectToLoad;
             message = "GEP:"+chosenProject.getName();
-            projectToLoad = this.serverCom.sendGetProject(message);
-            ProjectView projectView = new ProjectView(projectToLoad);
+            this.projectToLoad = this.serverCom.sendGetProject(message);
+            ProjectView projectView = new ProjectView(this.projectToLoad);
             this.getAllUsers();
             projectView.loadAllUsers(this.saUsersList);
-            ProjectViewController projectViewController = new ProjectViewController(projectView, projectToLoad, this.serverCom);
+            ProjectViewController projectViewController = new ProjectViewController(projectView, this.projectToLoad, this.serverCom, this.user);
             projectView.registerController(projectViewController);
             this.userView.clearSelection();
         }
