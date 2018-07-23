@@ -21,6 +21,7 @@ public class UserViewController implements ActionListener {
     private UserView userView = new UserView();
     private Logics logics = new Logics();
     private ServerCommunication serverCom;
+    private String[] saUsersList;
     private MainViewController mainViewController;
 
     public UserViewController() {
@@ -42,23 +43,19 @@ public class UserViewController implements ActionListener {
             NewProjectView newProjectView = new NewProjectView();
             NewProjectController newProjectController = new NewProjectController(newProjectView, user, serverCom, logics, this);
             newProjectView.registerController(newProjectController);
-            message = "GEU:";
-            String sUsersList = serverCom.sendGetAllUsers(message);
-            System.out.println(sUsersList);
-            if (!sUsersList.equals("")) {
-                String[] saUsersList = logics.parseAllUsersData(sUsersList);
-                int ll = saUsersList.length;
-                System.out.println(String.valueOf(ll));
+            this.getAllUsers();
+            int ll = this.saUsersList.length;
+            if (ll > 0){
                 for (nnn = 0; nnn < ll; nnn++){
-                    System.out.println(saUsersList[nnn]);
-                    if (saUsersList[nnn].equals(user.getNickname())){
-                        dontInclude = saUsersList[nnn];
+                    if (this.saUsersList[nnn].equals(this.user.getNickname())){
+                        dontInclude = this.saUsersList[nnn];
                     }
                 }
-                newProjectView.loadAllUserNames(saUsersList, dontInclude);
+                newProjectView.loadAllUserNames(this.saUsersList, dontInclude);
             } else {
                 userView.makeDialog("Error loading all the users from database", false);
             }
+            this.userView.clearSelection();
         }
 
         if((e.getActionCommand().equals("Eliminar Projecte"))){
@@ -83,6 +80,7 @@ public class UserViewController implements ActionListener {
                     this.makeDialog("No project is selected!", false);
                 }
             }
+            this.userView.clearSelection();
         }
         if((e.getActionCommand().equals("Editar Projecte"))){
             Project chosenProject = new Project();
@@ -95,10 +93,15 @@ public class UserViewController implements ActionListener {
                     this.makeDialog("No project selected!", false);
                 }
             }
-            ProjectView projectView = new ProjectView();
-            ProjectViewController projectViewController = new ProjectViewController(projectView);
+            Project projectToLoad;
+            message = "GEP:"+chosenProject.getName();
+            projectToLoad = this.serverCom.sendGetProject(message);
+            ProjectView projectView = new ProjectView(projectToLoad);
+            this.getAllUsers();
+            projectView.loadAllUsers(this.saUsersList);
+            ProjectViewController projectViewController = new ProjectViewController(projectView, projectToLoad, this.serverCom);
             projectView.registerController(projectViewController);
-            projectView.loadProject(chosenProject);
+            this.userView.clearSelection();
         }
         if((e.getActionCommand().equals("Tancar Sessió"))){
             this.userView.dispose();
@@ -126,5 +129,15 @@ public class UserViewController implements ActionListener {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void getAllUsers(){
+        String message = "GEU:";
+        String sUsersList = serverCom.sendGetAllUsers(message);
+        if (!sUsersList.equals("")) {
+            this.saUsersList = logics.parseAllUsersData(sUsersList);
+        } else {
+            userView.makeDialog("Error loading all the users from database", false);
+        }
     }
 }

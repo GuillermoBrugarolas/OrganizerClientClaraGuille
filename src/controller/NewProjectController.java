@@ -87,7 +87,7 @@ public class NewProjectController implements ActionListener {
             else if (tagName.equals("Urgent")){   color = new Color(200, 50, 0);}
             else if (tagName.equals("Critical")){   color = new Color(100, 0, 0);}
             else {  color = new Color(0, 0, 0);}
-            task = new Task(name, column, desc, new Tag(tagName, color), new User(userInCharge, null, null, null, null));
+            task = new Task(name, column, desc, new Tag(tagName, color), new User(userInCharge, null, null, null, null), this.newProject.getName(), this.newProject.getColumn(column).getName());
             this.newProject.getColumn(column).addTask(task);
             this.newProjectView.addTask(task);
             this.newTaskView.dispose();
@@ -97,8 +97,8 @@ public class NewProjectController implements ActionListener {
         }
         if (e.getActionCommand().equals("Eliminar Tasca")){
             int in, rr;
-            newProjectView.deleteTaskFromList();
             String selectedTask = this.newProjectView.getSelectedTask();
+            newProjectView.deleteTaskFromList();
             for (in = 1; in < 4; in++){
                 LinkedList<Task> li = this.newProject.getColumn(in).getTasks();
                 for (rr = 0; rr < li.size(); rr++){

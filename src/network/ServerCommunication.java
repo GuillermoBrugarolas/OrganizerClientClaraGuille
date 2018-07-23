@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 
 import controller.UserViewController;
 import model.Project;
+import model.Task;
 import model.User;
 import controller.MainViewController;
 
@@ -108,6 +109,27 @@ public class ServerCommunication extends Thread{
 		return answer;
 	}
 
+	public Project sendGetProject(String message){
+		Project answer = new Project();
+		try {
+			sServer = new Socket("127.0.0.1", portServer);
+			objectIn = new ObjectInputStream(sServer.getInputStream());
+			objectOut = new ObjectOutputStream(sServer.getOutputStream());
+			objectOut.writeObject((String)message);
+			answer = (Project) objectIn.readObject();
+			objectOut.close();
+			objectIn.close();
+			sServer.close();
+		} catch (UnknownHostException e) {
+			mainViewController.makeDialog("Coudn't connect with server", false);
+		} catch (IOException e) {
+			mainViewController.makeDialog("Coudn't connect with server", false);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return answer;
+	}
+
 	public String sendGetAllUsers(String message){
         String answer = "";
 		try {
@@ -149,6 +171,35 @@ public class ServerCommunication extends Thread{
                 added = true;
             }else if (answer.startsWith("KO")){
                 mainViewController.makeDialog("The new project could not be added to the database!",false);
+                added = false;
+            }
+            objectOut.close();
+            objectIn.close();
+            sServer.close();
+        } catch (UnknownHostException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (IOException e) {
+            mainViewController.makeDialog("Coudn't connect with server", false);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return added;
+    }
+
+    public boolean sendAddTask(Task t){
+        boolean added = false;
+        try {
+            sServer = new Socket("127.0.0.1", portServer);
+            objectIn = new ObjectInputStream(sServer.getInputStream());
+            objectOut = new ObjectOutputStream(sServer.getOutputStream());
+            objectOut.writeObject((Task)t);
+            String answer;
+            answer = (String)objectIn.readObject();
+            if(answer.startsWith("OK")){
+                mainViewController.makeDialog("The new task has been successfully added to the database!",true);
+                added = true;
+            }else if (answer.startsWith("KO")){
+                mainViewController.makeDialog("The new task could not be added to the database!",false);
                 added = false;
             }
             objectOut.close();

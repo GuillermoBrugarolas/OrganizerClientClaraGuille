@@ -1,6 +1,7 @@
 package view;
 
 import controller.NewProjectController;
+import controller.ProjectViewController;
 import model.User;
 
 import javax.swing.*;
@@ -106,6 +107,13 @@ public class NewTaskView extends JFrame {
     }
 
     public void registerController(NewProjectController c){
+        jbAddTask.setActionCommand("Afegir Tasca NovaTasca");
+        jbAddTask.addActionListener(c);
+        jbCancel.setActionCommand("Cancelar NovaTasca");
+        jbCancel.addActionListener(c);
+    }
+
+    public void registerController2(ProjectViewController c){
         jbAddTask.setActionCommand("Afegir Tasca NovaTasca");
         jbAddTask.addActionListener(c);
         jbCancel.setActionCommand("Cancelar NovaTasca");

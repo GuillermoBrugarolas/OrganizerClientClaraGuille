@@ -211,6 +211,11 @@ public class UserView extends JFrame{
         dlm.removeElementAt(this.listLeft.getSelectedIndex());
     }
 
+    public void clearSelection(){
+        this.listLeft.clearSelection();
+        this.listRight.clearSelection();
+    }
+
     public String getID(){
         return this.jtfId.getText();
     }
